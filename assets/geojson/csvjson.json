@@ -1,0 +1,1052 @@
+[
+  {
+    "FID": -1,
+    "WADMKC": "Ciawigebang",
+    "KelasAkhir": "Rendah",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "26,524899999999999"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Ciawigebang",
+    "KelasAkhir": "Sangat Rendah",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "0,707547189760000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Ciawigebang",
+    "KelasAkhir": "Sangat Tinggi",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "0,006945780060000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Ciawigebang",
+    "KelasAkhir": "Sedang",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "20,538799999999998"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Ciawigebang",
+    "KelasAkhir": "Tinggi",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "12,478600000000000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Cibeureum",
+    "KelasAkhir": "Rendah",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "3,719145896800000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Cibeureum",
+    "KelasAkhir": "Sangat Rendah",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "0,116755874410000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Cibeureum",
+    "KelasAkhir": "Sangat Tinggi",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "0,093830113790000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Cibeureum",
+    "KelasAkhir": "Sedang",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "15,418699999999999"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Cibeureum",
+    "KelasAkhir": "Tinggi",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "19,632899999999999"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Cibingbin",
+    "KelasAkhir": "Rendah",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "12,446300000000001"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Cibingbin",
+    "KelasAkhir": "Sangat Rendah",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "0,306992365870000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Cibingbin",
+    "KelasAkhir": "Sangat Tinggi",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "0,170098806710000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Cibingbin",
+    "KelasAkhir": "Sedang",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "35,775199999999998"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Cibingbin",
+    "KelasAkhir": "Tinggi",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "21,054300000000001"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Cidahu",
+    "KelasAkhir": "Rendah",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "7,965085569490000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Cidahu",
+    "KelasAkhir": "Sangat Rendah",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "0,083962071010000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Cidahu",
+    "KelasAkhir": "Sangat Tinggi",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "0,029412328400000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Cidahu",
+    "KelasAkhir": "Sedang",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "20,940300000000001"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Cidahu",
+    "KelasAkhir": "Tinggi",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "8,383547499400001"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Cigandamekar",
+    "KelasAkhir": "Rendah",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "7,735107484320000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Cigandamekar",
+    "KelasAkhir": "Sangat Rendah",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "0,034085593970000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Cigandamekar",
+    "KelasAkhir": "Sangat Tinggi",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "0,041788361660000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Cigandamekar",
+    "KelasAkhir": "Sedang",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "12,063900000000000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Cigandamekar",
+    "KelasAkhir": "Tinggi",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "4,229265713190000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Cigugur",
+    "KelasAkhir": "Rendah",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "3,526787353520000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Cigugur",
+    "KelasAkhir": "Sangat Tinggi",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "2,922560525490000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Cigugur",
+    "KelasAkhir": "Sedang",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "10,098500000000000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Cigugur",
+    "KelasAkhir": "Tinggi",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "25,604099999999999"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Cilebak",
+    "KelasAkhir": "Rendah",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "2,839546982640000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Cilebak",
+    "KelasAkhir": "Sangat Rendah",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "0,038227996150000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Cilebak",
+    "KelasAkhir": "Sangat Tinggi",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "1,954463109390000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Cilebak",
+    "KelasAkhir": "Sedang",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "15,102800000000000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Cilebak",
+    "KelasAkhir": "Tinggi",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "22,404900000000001"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Cilimus",
+    "KelasAkhir": "Rendah",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "5,519344244800000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Cilimus",
+    "KelasAkhir": "Sangat Tinggi",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "0,653720318240000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Cilimus",
+    "KelasAkhir": "Sedang",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "10,298400000000001"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Cilimus",
+    "KelasAkhir": "Tinggi",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "20,097600000000000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Cimahi",
+    "KelasAkhir": "Rendah",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "9,905830826440001"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Cimahi",
+    "KelasAkhir": "Sangat Rendah",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "0,157129401620000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Cimahi",
+    "KelasAkhir": "Sangat Tinggi",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "1,193575552320000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Cimahi",
+    "KelasAkhir": "Sedang",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "28,966200000000001"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Cimahi",
+    "KelasAkhir": "Tinggi",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "15,703200000000001"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Ciniru",
+    "KelasAkhir": "Rendah",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "9,523516472250000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Ciniru",
+    "KelasAkhir": "Sangat Rendah",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "1,049316371280000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Ciniru",
+    "KelasAkhir": "Sangat Tinggi",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "0,146748936400000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Ciniru",
+    "KelasAkhir": "Sedang",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "29,254700000000000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Ciniru",
+    "KelasAkhir": "Tinggi",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "10,090299999999999"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Cipicung",
+    "KelasAkhir": "Rendah",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "7,069664069740000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Cipicung",
+    "KelasAkhir": "Sangat Rendah",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "0,096947510640000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Cipicung",
+    "KelasAkhir": "Sangat Tinggi",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "0,028822811790000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Cipicung",
+    "KelasAkhir": "Sedang",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "7,327548882830000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Cipicung",
+    "KelasAkhir": "Tinggi",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "4,670491762600000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Ciwaru",
+    "KelasAkhir": "Rendah",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "3,158374670270000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Ciwaru",
+    "KelasAkhir": "Sangat Rendah",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "0,087623267940000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Ciwaru",
+    "KelasAkhir": "Sangat Tinggi",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "1,859143880580000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Ciwaru",
+    "KelasAkhir": "Sedang",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "16,366599999999998"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Ciwaru",
+    "KelasAkhir": "Tinggi",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "30,809799999999999"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Darma",
+    "KelasAkhir": "Rendah",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "7,253275958920000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Darma",
+    "KelasAkhir": "Sangat Rendah",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "2,906814662260000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Darma",
+    "KelasAkhir": "Sangat Tinggi",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "2,716765870750000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Darma",
+    "KelasAkhir": "Sedang",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "19,041499999999999"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Darma",
+    "KelasAkhir": "Tinggi",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "22,954899999999999"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Garawangi",
+    "KelasAkhir": "Rendah",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "9,262507893090000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Garawangi",
+    "KelasAkhir": "Sangat Rendah",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "1,649904019140000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Garawangi",
+    "KelasAkhir": "Sangat Tinggi",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "0,073412408770000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Garawangi",
+    "KelasAkhir": "Sedang",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "12,539700000000000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Garawangi",
+    "KelasAkhir": "Tinggi",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "6,112650070520000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Hantara",
+    "KelasAkhir": "Rendah",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "7,423620183530000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Hantara",
+    "KelasAkhir": "Sangat Rendah",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "0,158444887860000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Hantara",
+    "KelasAkhir": "Sangat Tinggi",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "0,007459923900000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Hantara",
+    "KelasAkhir": "Sedang",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "22,899300000000000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Hantara",
+    "KelasAkhir": "Tinggi",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "3,604268759120000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Jalaksana",
+    "KelasAkhir": "Rendah",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "4,136864521080000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Jalaksana",
+    "KelasAkhir": "Sangat Tinggi",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "2,330997923510000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Jalaksana",
+    "KelasAkhir": "Sedang",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "8,393389556570000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Jalaksana",
+    "KelasAkhir": "Tinggi",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "18,972000000000001"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Japara",
+    "KelasAkhir": "Rendah",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "8,813139021120000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Japara",
+    "KelasAkhir": "Sangat Rendah",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "0,207697878730000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Japara",
+    "KelasAkhir": "Sangat Tinggi",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "0,028329015900000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Japara",
+    "KelasAkhir": "Sedang",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "12,328900000000001"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Japara",
+    "KelasAkhir": "Tinggi",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "3,737607918930000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Kadugede",
+    "KelasAkhir": "Rendah",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "3,570057408960000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Kadugede",
+    "KelasAkhir": "Sangat Rendah",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "0,103664050550000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Kadugede",
+    "KelasAkhir": "Sangat Tinggi",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "0,141763327770000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Kadugede",
+    "KelasAkhir": "Sedang",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "6,966434836590000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Kadugede",
+    "KelasAkhir": "Tinggi",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "6,890752790170000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Kalimanggis",
+    "KelasAkhir": "Rendah",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "9,927493409729999"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Kalimanggis",
+    "KelasAkhir": "Sangat Rendah",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "0,615073856570000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Kalimanggis",
+    "KelasAkhir": "Sedang",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "8,268023803140000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Kalimanggis",
+    "KelasAkhir": "Tinggi",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "0,908681406590000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Karang Kancana",
+    "KelasAkhir": "Rendah",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "2,923104243630000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Karang Kancana",
+    "KelasAkhir": "Sangat Rendah",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "0,057208458010000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Karang Kancana",
+    "KelasAkhir": "Sangat Tinggi",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "0,316631299640000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Karang Kancana",
+    "KelasAkhir": "Sedang",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "17,775300000000001"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Karang Kancana",
+    "KelasAkhir": "Tinggi",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "45,950699999999998"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Kramatmulya",
+    "KelasAkhir": "Rendah",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "3,950934707570000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Kramatmulya",
+    "KelasAkhir": "Sangat Tinggi",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "0,415980641780000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Kramatmulya",
+    "KelasAkhir": "Sedang",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "3,521489111550000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Kramatmulya",
+    "KelasAkhir": "Tinggi",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "8,879295395550001"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Kuningan",
+    "KelasAkhir": "Rendah",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "10,451499999999999"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Kuningan",
+    "KelasAkhir": "Sangat Tinggi",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "0,171933816380000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Kuningan",
+    "KelasAkhir": "Sedang",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "8,445584662580000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Kuningan",
+    "KelasAkhir": "Tinggi",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "10,646400000000000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Lebakwangi",
+    "KelasAkhir": "Rendah",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "6,958404800070000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Lebakwangi",
+    "KelasAkhir": "Sangat Rendah",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "0,013951388020000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Lebakwangi",
+    "KelasAkhir": "Sedang",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "9,543075186759999"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Lebakwangi",
+    "KelasAkhir": "Tinggi",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "2,907129628380000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Luragung",
+    "KelasAkhir": "Rendah",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "9,366831056170000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Luragung",
+    "KelasAkhir": "Sangat Rendah",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "0,180228514890000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Luragung",
+    "KelasAkhir": "Sangat Tinggi",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "0,152322489720000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Luragung",
+    "KelasAkhir": "Sedang",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "17,029599999999999"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Luragung",
+    "KelasAkhir": "Tinggi",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "14,917400000000001"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Maleber",
+    "KelasAkhir": "Rendah",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "8,800223775610000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Maleber",
+    "KelasAkhir": "Sangat Rendah",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "0,335347418290000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Maleber",
+    "KelasAkhir": "Sangat Tinggi",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "0,870375755470000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Maleber",
+    "KelasAkhir": "Sedang",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "29,875699999999998"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Maleber",
+    "KelasAkhir": "Tinggi",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "17,565700000000000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Mandirancan",
+    "KelasAkhir": "Rendah",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "3,867806042130000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Mandirancan",
+    "KelasAkhir": "Sangat Tinggi",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "1,658911676210000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Mandirancan",
+    "KelasAkhir": "Sedang",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "12,770899999999999"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Mandirancan",
+    "KelasAkhir": "Tinggi",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "15,598500000000000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Nusaherang",
+    "KelasAkhir": "Rendah",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "3,633904437560000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Nusaherang",
+    "KelasAkhir": "Sangat Rendah",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "0,000333983240000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Nusaherang",
+    "KelasAkhir": "Sangat Tinggi",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "0,070141937130000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Nusaherang",
+    "KelasAkhir": "Sedang",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "9,836984210070000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Nusaherang",
+    "KelasAkhir": "Tinggi",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "4,504302959040000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Pancalang",
+    "KelasAkhir": "Rendah",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "5,523376797270000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Pancalang",
+    "KelasAkhir": "Sangat Rendah",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "0,015312800130000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Pancalang",
+    "KelasAkhir": "Sangat Tinggi",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "0,009763183260000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Pancalang",
+    "KelasAkhir": "Sedang",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "10,688599999999999"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Pancalang",
+    "KelasAkhir": "Tinggi",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "3,030866731790000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Pasawahan",
+    "KelasAkhir": "Rendah",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "2,059084558770000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Pasawahan",
+    "KelasAkhir": "Sangat Tinggi",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "1,869106444020000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Pasawahan",
+    "KelasAkhir": "Sedang",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "18,391200000000001"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Pasawahan",
+    "KelasAkhir": "Tinggi",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "26,454300000000000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Selajambe",
+    "KelasAkhir": "Rendah",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "4,904053925480000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Selajambe",
+    "KelasAkhir": "Sangat Rendah",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "0,012608831650000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Selajambe",
+    "KelasAkhir": "Sangat Tinggi",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "0,126891298990000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Selajambe",
+    "KelasAkhir": "Sedang",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "21,906500000000001"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Selajambe",
+    "KelasAkhir": "Tinggi",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "9,115160965690000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Sindangagung",
+    "KelasAkhir": "Rendah",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "3,362293867440000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Sindangagung",
+    "KelasAkhir": "Sangat Tinggi",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "0,034296649740000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Sindangagung",
+    "KelasAkhir": "Sedang",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "1,129918521620000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Sindangagung",
+    "KelasAkhir": "Tinggi",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "8,381261726050001"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Subang",
+    "KelasAkhir": "Rendah",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "5,601583971530000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Subang",
+    "KelasAkhir": "Sangat Rendah",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "0,028582034510000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Subang",
+    "KelasAkhir": "Sangat Tinggi",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "0,837338921550000"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Subang",
+    "KelasAkhir": "Sedang",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "26,818100000000001"
+  },
+  {
+    "FID": -1,
+    "WADMKC": "Subang",
+    "KelasAkhir": "Tinggi",
+    "FREQUENCY": 1,
+    "SUM_Luas_Km2": "14,121700000000001"
+  }
+]

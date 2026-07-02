@@ -1,0 +1,35 @@
+# Disable directory browsing
+Options -Indexes
+
+# Disable server signature start
+ServerSignature Off
+# Disable server signature end
+
+# Rewrite engine for CodeIgniter 4
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    
+    # If you installed CodeIgniter in a subfolder, you will need to
+    # change the following line to match the subfolder you need.
+    # RewriteBase /subfolder
+    
+    # Redirect non-www to www (optional)
+    # RewriteCond %{HTTP_HOST} !^www\. [NC]
+    # RewriteRule ^(.*)$ http://www.%{HTTP_HOST}/$1 [R,L]
+    
+    # Remove index.php from URL
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^(.*)$ index.php/$1 [L]
+</IfModule>
+
+# Deny access to system folders
+<FilesMatch "^\.">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
