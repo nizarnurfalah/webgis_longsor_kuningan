@@ -69,7 +69,7 @@ const CONFIG = {
             year: null, 
             file: 'Curah_HujanMeanasli_Bappeda.json', 
             label: 'Rata-rata Curah Hujan',
-            downloadUrl: 'https://drive.google.com/file/d/1BtfYWpgVdLMkaFmBRh085RsLwvZaT-0X/view?usp=drive_link'
+            downloadUrl: 'https://drive.google.com/file/d/1jQN-vJkdQwLWpscdLn7zdNHcL-RIwTX6/view?usp=drive_link'
         },
 
         // --- Parameter Fisik ---
@@ -85,21 +85,21 @@ const CONFIG = {
             year: null, 
             file: 'Jenis_Bebatuan_Bappeda.json', 
             label: 'Jenis Bebatuan',
-            downloadUrl: 'https://drive.google.com/file/d/1CZ3hfdfTxXi50LsbZgSAbpbsP34Nw0mV/view?usp=drive_link'
+            downloadUrl: 'https://drive.google.com/file/d/1vnkFYqN-9ddmH4SpkeAgDxz2CFmb0FM0/view?usp=drive_link'
         },
         tanah: { 
             category: 'tanah', 
             year: null, 
             file: 'Jenis_Tanah_Bappeda.json', 
             label: 'Jenis Tanah',
-            downloadUrl: 'https://drive.google.com/file/d/1qS3788rgal2tOS8JWVfz1S4gEixABzXU/view?usp=drive_link'
+            downloadUrl: 'https://drive.google.com/file/d/109ly38vcatU4O-_KbUft2tFGZXqnOMbj/view?usp=drive_link'
         },
         lahan: { 
             category: 'lahan', 
             year: null, 
             file: 'Tutupan_Lahan_Bappeda.json', 
             label: 'Tutupan Lahan',
-            downloadUrl: 'https://drive.google.com/file/d/1piuGmYIv9ceF71JlPw1KLeE7QIO49-Ys/view?usp=drive_link'
+            downloadUrl: 'https://drive.google.com/file/d/1ag_yAW4ro2TIruxpTFJRtjwFrd2EkJT_/view?usp=drive_link'
         },
 
         // --- Batas Wilayah ---
@@ -143,51 +143,46 @@ const CONFIG = {
             '≥ 4 Kejadian': '#880e4f'
         },
         hujan: {
-            '2830 - 3000mm': '#46a294',
-            '3000 - 3988mm': '#b2ebf2',
+            '2830 - 3000mm': '#ffff00',
+            '3000 - 3988mm': '#ff0000',
         },
         kelerengan: {
             'Datar (0 - 8%)': '#006d2c',
             'Landai (8 - 15%)': '#74c476',
-            'Agak Curam (15 - 25%)': '#ffff00',
-            'Curam (25 - 45%)': '#fe9929',
+            'Agak Curam (15 - 30%)': '#ffff00',
+            'Curam (30 - 45%)': '#fe9929',
             'Sangat Curam (>45%)': '#e31a1c'
         },
         bebatuan: {
-            'Batu Aluvial': '#ff0000',
-            'Batu Sedimentasi': '#228b22',
-            'Batu Vulkanik': '#ffff00'
+            'Batu Aluvial': '#008000',
+            'Batu Sedimentasi': '#ffff00',
+            'Batu Vulkanik': '#ff0000'
         },
         tanah: {
-            'Aluvial, Planosol, Hidromorf': '#27824c',
-            'Andosol, Laterit, Grumusol': '#4a1486',
-            'Brown forest soil, Mediterian': '#b30000',
-            'Latosol': '#999922',
-            'Regosol, Litosol, Organosol': '#35538f'
+            'Aluvial, Planosol, Hidromorf': '#004d1a',
+            'Latosol': '#74c476',
+            'Brown forest soil, Mediterian': '#ffff00',
+            'Andosol, Laterit, Grumusol': '#ff9900',
+            'Regosol, Litosol, Organosol': '#ff0000'
         },
         lahan: {
-            'Danau/Situ': '#00a2e8',
-            'Gedung/Bangunan': '#fff200',
-            'Hutan Rimba': '#22b14c',
-            'Kantor Bupati': '#8ce6ff',
-            'Kolam': '#00a2e8',
-            'Padang Rumput': '#b5e61d',
-            'Pasir/Bukit Pasir Darat': '#d7c271',
-            'Pasir/Bukit Pasir Laut': '#c49a6c',
-            'Perkebunan/Kebun': '#7cfc00',
-            'Permukiman dan Tempat Kegiatan': '#ffff00',
-            'Sawah': '#a6f28f',
-            'Sawah Tadah Hujan': '#008040',
-            'Semak Belukar': '#6b8e23',
-            'Sungai': '#3f48cc',
-            'Tanah Kosong/Gundul': '#995431',
-            'Tanaman Campuran': '#32cd32',
-            'Tegalan/Ladang': '#9acd32',
-            'Vegetasi Non Budidaya Lainnya': '#3cb371',
-            'Lainnya': '#d9d9d9'
+            'Tambak, waduk, perairan': '#006400',
+            'Kota, Pemukiman, Bandara': '#a8d600',
+            'Hutan dan perkebunan': '#ffff00',
+            'Semak Belukar': '#ffa500',
+            'Tegalan, sawah': '#ff0000'
         }
     }
 };
+
+// Mapping label lama GeoJSON → label baru config untuk kelerengan
+const KELERENGAN_LABEL_MAP = {
+    'Agak Curam (15 - 25%)': 'Agak Curam (15 - 30%)',
+    'Curam (25 - 45%)': 'Curam (30 - 45%)'
+};
+function mapKelerenganLabel(label) {
+    return KELERENGAN_LABEL_MAP[label] || label;
+}
 
 // Helper: find category config by id
 function getCategoryConfig(catId) {
@@ -306,7 +301,8 @@ async function loadLayer(key) {
         if (!state.map.getPane(paneId)) {
             state.map.createPane(paneId);
             let zIndex = 410;
-            if (config.category === 'batas') zIndex = 450;
+            if (key === 'batas_kabupaten') zIndex = 440;
+            else if (config.category === 'batas') zIndex = 450;
             else if (config.isEvakuasiPotensi) zIndex = 405; // Put below routes and points
             state.map.getPane(paneId).style.zIndex = zIndex;
         }
@@ -347,18 +343,19 @@ async function loadLayer(key) {
         // Fade in the entire pane
         const paneEl = state.map.getPane(paneId);
         if (paneEl) {
-            paneEl.style.opacity = '0';
-            paneEl.style.transition = 'opacity 0.5s ease';
-            requestAnimationFrame(() => { paneEl.style.opacity = '1'; });
+            paneEl.style.opacity = '1';
         }
 
         state.layersInstance[key] = layer;
         state.activeLayers.push(key);
 
-        // Batas wilayah always on top
+        // Batas wilayah always on top visually
         if (config.category === 'batas') {
             layer.bringToFront();
         }
+
+        // Update batas interactivity based on active parameter layers
+        updateBatasInteractivity();
 
         updateLegend();
         updateInfoPanel();
@@ -369,7 +366,8 @@ async function loadLayer(key) {
 
     } catch (err) {
         console.error(`Error loading ${key}:`, err);
-        alert(`Gagal memuat layer: ${config.label}\n${err.message}`);
+        const cb = document.querySelector(`input[data-layer="${key}"]`);
+        if (cb) cb.checked = false;
     } finally {
         hideLoading();
     }
@@ -380,6 +378,7 @@ function removeLayer(key) {
         state.map.removeLayer(state.layersInstance[key]);
         delete state.layersInstance[key];
         state.activeLayers = state.activeLayers.filter(k => k !== key);
+        updateBatasInteractivity();
         updateLegend();
         updateInfoPanel();
         updateTimeSlider();
@@ -389,16 +388,83 @@ function removeLayer(key) {
     }
 }
 
+// Control batas wilayah interactivity:
+// When a parameter layer is active, disable pointer-events on batas panes
+// so clicks pass through to parameter layers underneath.
+// When no parameter layer is active, re-enable batas pointer-events.
+function updateBatasInteractivity() {
+    const paramCategories = ['hujan', 'kelerengan', 'bebatuan', 'tanah', 'lahan'];
+    const hasParamLayer = state.activeLayers.some(k => {
+        const c = CONFIG.layers[k];
+        if (!c) return false;
+        // For longsor, only passthrough when longsor_desa is active
+        // (user needs to click desa features directly).
+        // longsor_mean does NOT need passthrough because batas popup
+        // already shows the kerawanan longsor chart.
+        if (c.isDesaKejadian) return true;
+        return paramCategories.includes(c.category);
+    });
+
+    if (!document.getElementById('batas-passthrough-css')) {
+        const style = document.createElement('style');
+        style.id = 'batas-passthrough-css';
+        style.innerHTML = `
+            .batas-passthrough, .batas-passthrough * {
+                pointer-events: none !important;
+            }
+        `;
+        document.head.appendChild(style);
+    }
+
+    // Update pointer-events for all batas panes
+    ['batas_kabupaten', 'batas_kecamatan'].forEach(bKey => {
+        const pane = state.map.getPane(`pane-${bKey}`);
+        if (pane) {
+            if (hasParamLayer) {
+                pane.classList.add('batas-passthrough');
+            } else {
+                pane.classList.remove('batas-passthrough');
+            }
+        }
+    });
+}
+
 // Toggle a layer on or off
 async function toggleLayer(key) {
+    // Helper: check if a layer key is "exclusive" (not batas wilayah)
+    function isExclusiveLayer(k) {
+        const c = CONFIG.layers[k];
+        return c && c.category !== 'batas';
+    }
+
+    // Helper: remove all exclusive layers (including evakuasi sub-layers)
+    function removeAllExclusiveLayers() {
+        const evakuasiSubKeys = ['evakuasi_potensi', 'evakuasi_kec', 'evakuasi_jalan', 'evakuasi_awal', 'evakuasi_shelter'];
+        const toRemove = [...state.activeLayers].filter(k => isExclusiveLayer(k));
+        toRemove.forEach(k => {
+            removeLayer(k);
+            const cb = document.querySelector(`input[data-layer="${k}"]`);
+            if (cb) cb.checked = false;
+        });
+        // Also remove evakuasi sub-layers that may not be in activeLayers tracking
+        evakuasiSubKeys.forEach(k => {
+            if (state.layersInstance[k]) {
+                removeLayer(k);
+            }
+        });
+    }
+
     if (key === 'evakuasi_rute') {
         const subKeys = ['evakuasi_potensi', 'evakuasi_kec', 'evakuasi_jalan', 'evakuasi_awal', 'evakuasi_shelter'];
         if (state.activeLayers.includes(key)) {
+            // Turn off evakuasi
             removeLayer(key);
             subKeys.forEach(k => removeLayer(k));
             const cb = document.querySelector(`input[data-layer="${key}"]`);
             if (cb) cb.checked = false;
         } else {
+            // Turn off all other exclusive layers first
+            removeAllExclusiveLayers();
             await loadLayer(key);
             for (let k of subKeys) await loadLayer(k);
             const cb = document.querySelector(`input[data-layer="${key}"]`);
@@ -418,15 +484,9 @@ async function toggleLayer(key) {
         return;
     }
 
-    // Check layer limit (max 3 data layers, excluding batas)
-    if (config.category !== 'batas') {
-        const dataLayers = state.activeLayers.filter(l => CONFIG.layers[l].category !== 'batas');
-        if (dataLayers.length >= 3) {
-            showToast('⚠️ Maksimal 3 Layer', 'Matikan salah satu layer terlebih dahulu agar peta tidak menjadi berat.', 'warning');
-            const cb = document.querySelector(`input[data-layer="${key}"]`);
-            if (cb) cb.checked = false;
-            return;
-        }
+    // Single-layer mode: if this is an exclusive layer, remove all other exclusive layers
+    if (isExclusiveLayer(key)) {
+        removeAllExclusiveLayers();
     }
 
     // Load the new layer
@@ -453,9 +513,9 @@ function getLayerStyle(config, feature, key) {
 
     if (config.category === 'batas') {
         return {
-            color: '#ff0000',
-            weight: 3,
-            fillOpacity: 0,
+            color: '#222222',
+            weight: 2.5,
+            fill: false,
             dashArray: '5, 5'
         };
     }
@@ -499,7 +559,7 @@ function getLayerStyle(config, feature, key) {
     }
 
     if (config.category === 'kelerengan') {
-        const kelas = props['Kelas_FKL'] || '';
+        const kelas = mapKelerenganLabel(props['Kelas_FKL'] || '');
         const color = CONFIG.colors.kelerengan[kelas] || '#cccccc';
         return { fillColor: color, weight: 0.8, opacity: 0.8, color: 'rgba(255,255,255,0.3)', fillOpacity: 0.75 };
     }
@@ -517,8 +577,8 @@ function getLayerStyle(config, feature, key) {
     }
 
     if (config.category === 'lahan') {
-        const kelas = props['REMARK'] || props['Kelas_FPL'] || '';
-        const color = CONFIG.colors.lahan[kelas] || CONFIG.colors.lahan['Lainnya'] || '#d9d9d9';
+        const kelas = props['Kelas_FPL'] || '';
+        const color = CONFIG.colors.lahan[kelas] || '#d9d9d9';
         return { fillColor: color, weight: 0.8, opacity: 0.8, color: 'rgba(255,255,255,0.3)', fillOpacity: 0.75 };
     }
 
@@ -560,17 +620,33 @@ function bindPopup(config, feature, layer) {
         }
     } else if (config.category === 'longsor') {
         const kelas = props[config.field] || props['Kelas'] || '-';
-        content += `Tingkat Kerawanan: <strong>${kelas}</strong>`;
-    } else if (config.category === 'hujan') {
-        content += `Curah Hujan: <strong>${props.Kelas_FCH || 'N/A'}</strong>`;
-    } else if (config.category === 'kelerengan') {
-        content += `Kelerengan: <strong>${props.Kelas_FKL || 'N/A'}</strong>`;
-    } else if (config.category === 'bebatuan') {
-        content += `Jenis Batuan: <strong>${props.Kelas_FJB || 'N/A'}</strong>`;
-    } else if (config.category === 'tanah') {
-        content += `Jenis Tanah: <strong>${props.Kelas_FJT || 'N/A'}</strong>`;
-    } else if (config.category === 'lahan') {
-        content += `Tutupan: <strong>${props.REMARK || props.Kelas_FPL || 'N/A'}</strong>`;
+        layer._longsorInfo = { configLabel: config.label, kelas: kelas };
+    } else if (['hujan', 'kelerengan', 'bebatuan', 'tanah', 'lahan'].includes(config.category)) {
+        // Parameter layers — will be populated dynamically on click with kecamatan info
+        const paramLabels = {
+            hujan: 'Curah Hujan',
+            kelerengan: 'Kelerengan',
+            bebatuan: 'Jenis Batuan',
+            tanah: 'Jenis Tanah',
+            lahan: 'Tutupan Lahan'
+        };
+        const paramFields = {
+            hujan: { kelas: 'Kelas_FCH', skor: 'Skor_FCH' },
+            kelerengan: { kelas: 'Kelas_FKL', skor: 'Skor_FKL' },
+            bebatuan: { kelas: 'Kelas_FJB', skor: 'Skor_FJB' },
+            tanah: { kelas: 'Kelas_FJT', skor: 'Skor_FJT' },
+            lahan: { kelas: 'Kelas_FPL', skor: 'Skor_FPL' }
+        };
+        const fields = paramFields[config.category];
+        const paramLabel = paramLabels[config.category];
+        let kelasVal = props[fields.kelas] || 'N/A';
+        const skorVal = props[fields.skor] || 'N/A';
+        // Map old GeoJSON kelerengan labels to new labels
+        if (config.category === 'kelerengan') {
+            kelasVal = mapKelerenganLabel(kelasVal);
+        }
+        // Content will be built dynamically on click to include kecamatan
+        layer._paramInfo = { category: config.category, label: paramLabel, kelas: kelasVal, skor: skorVal, configLabel: config.label };
     }
 
     if (config.category === 'batas' || config.isDesaKejadian) {
@@ -615,8 +691,93 @@ function bindPopup(config, feature, layer) {
                 }
             });
         }
+    } else if (layer._paramInfo) {
+        // Parameter layers — click popup with kecamatan stats
+        layer.bindPopup('<div style="text-align:center; padding:10px;">Memuat data...</div>', { 
+            className: 'webgis-popup custom-chart-popup', 
+            minWidth: 220 
+        });
+        
+        layer.on('popupopen', function(e) {
+            const popup = e.popup;
+            const latlng = popup.getLatLng();
+            const info = this._paramInfo;
+            const kecamatan = findKecamatan(latlng);
+            const kecLabel = kecamatan || 'Tidak diketahui';
+            const safeId = (kecLabel + '-' + info.category).replace(/[\s,]+/g, '-');
+
+            let popupContent = `<strong>${info.configLabel}</strong><br>`;
+            popupContent += `Kecamatan: <strong>${kecLabel}</strong>`;
+            popupContent += `<hr style="border:none; border-top:1px solid rgba(255,255,255,0.15); margin:6px 0;">`;
+            popupContent += `${info.label}: <strong>${info.kelas}</strong> | Skor: <strong>${info.skor}</strong>`;
+
+            if (kecamatan) {
+                popupContent += `<div class="chart-wrapper" style="width: 200px; height: 180px; margin-top: 12px; position: relative; overflow: hidden;">
+                    <canvas id="chart-${safeId}"></canvas>
+                </div>
+                <div id="table-${safeId}" style="margin-top: 8px;"></div>`;
+            }
+
+            popup.setContent(popupContent);
+
+            if (kecamatan) {
+                // Wait for DOM to render, then build chart
+                setTimeout(() => {
+                    renderPopupParameterChart(kecamatan, info.category, safeId);
+                }, 100);
+            }
+        });
+        layer.on('mouseover', function() {
+            this.setStyle({ weight: 2.5, color: '#fff', fillOpacity: 0.9 });
+        });
+        layer.on('mouseout', function() {
+            this.setStyle(getLayerStyle(config, feature));
+        });
+    } else if (layer._longsorInfo) {
+        // Longsor layers — click popup with kecamatan stats
+        layer.bindPopup('<div style="text-align:center; padding:10px;">Memuat data...</div>', { 
+            className: 'webgis-popup custom-chart-popup', 
+            minWidth: 220 
+        });
+        
+        layer.on('popupopen', function(e) {
+            const popup = e.popup;
+            const latlng = popup.getLatLng();
+            const info = this._longsorInfo;
+            const kecamatan = findKecamatan(latlng);
+            const kecLabel = kecamatan || 'Tidak diketahui';
+            const safeId = kecLabel.replace(/\s+/g, '-');
+
+            let popupContent = `<strong>${info.configLabel}</strong><br>`;
+            popupContent += `Kecamatan: <strong>${kecLabel}</strong>`;
+            popupContent += `<hr style="border:none; border-top:1px solid rgba(255,255,255,0.15); margin:6px 0;">`;
+            popupContent += `Tingkat Kerawanan: <strong>${info.kelas}</strong>`;
+
+            if (kecamatan) {
+                popupContent += `<div class="chart-wrapper" style="width: 200px; height: 180px; margin-top: 12px; position: relative; overflow: hidden;">
+                    <canvas id="chart-${safeId}"></canvas>
+                </div>
+                <div id="table-${safeId}" style="margin-top: 8px;"></div>`;
+            }
+
+            popup.setContent(popupContent);
+
+            if (kecamatan) {
+                // Use the original renderPopupChart which expects the kecamatan name
+                setTimeout(() => {
+                    renderPopupChart(kecamatan);
+                }, 100);
+            }
+        });
+
+        layer.on('mouseover', function(e) {
+            this.setStyle({ weight: 2.5, color: '#fff', fillOpacity: 0.9 });
+        });
+        layer.on('mouseout', function() {
+            this.setStyle(getLayerStyle(config, feature));
+        });
     } else {
-        // Other layers use hover popup
+        // Fallback for any other layers
         layer.bindPopup(content, { className: 'webgis-popup' });
         layer.on('mouseover', function(e) {
             this.openPopup(e.latlng);
@@ -958,7 +1119,7 @@ window.flyToKecamatan = async function(kecamatan) {
         state.map.flyToBounds(targetLayer.getBounds(), { duration: 1.5, padding: [50, 50] });
         // Open popup after fly animation completes
         setTimeout(() => {
-            targetLayer.openPopup();
+            targetLayer.openPopup(targetLayer.getBounds().getCenter());
         }, 1600);
     }
 }
@@ -1207,6 +1368,261 @@ function renderPopupChart(wadmokc) {
 }
 
 // ========================================
+// KECAMATAN SPATIAL LOOKUP
+// ========================================
+async function preloadKecamatanData() {
+    try {
+        const file = 'Batas_Wilayah_Kecamatan_Bappeda.json';
+        if (!state.geojsonCache[file]) {
+            const response = await fetch(CONFIG.geojsonPath + file);
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+            state.geojsonCache[file] = await response.json();
+        }
+        console.log('✅ Kecamatan data preloaded for spatial lookup');
+    } catch (err) {
+        console.warn('⚠️ Failed to preload kecamatan data:', err);
+    }
+}
+
+function findKecamatan(latlng) {
+    const kecGeoJSON = state.geojsonCache['Batas_Wilayah_Kecamatan_Bappeda.json'];
+    if (!kecGeoJSON || typeof turf === 'undefined') return null;
+    const point = turf.point([latlng.lng, latlng.lat]);
+    for (const feature of kecGeoJSON.features) {
+        try {
+            if (turf.booleanPointInPolygon(point, feature)) {
+                return feature.properties.WADMKC || null;
+            }
+        } catch (e) { continue; }
+    }
+    return null;
+}
+
+// ========================================
+// PARAMETER POPUP CHART (per Kecamatan)
+// Uses point-sampling for robust area estimation
+// ========================================
+
+// Cache for computed area estimates: key = "kecamatan|category" → { classAreas }
+const _paramAreaCache = {};
+// Cache for simplified parameter features per category
+const _simplifiedParamCache = {};
+
+function renderPopupParameterChart(kecamatan, category, safeId) {
+    const chartId = 'chart-' + safeId;
+    const tableId = 'table-' + safeId;
+    const ctx = document.getElementById(chartId);
+    if (!ctx) return;
+
+    if (state.charts[chartId]) state.charts[chartId].destroy();
+
+    // Find the active layer's GeoJSON data for this category
+    const activeKey = state.activeLayers.find(k => CONFIG.layers[k]?.category === category);
+    if (!activeKey) return;
+    const config = CONFIG.layers[activeKey];
+    const geojsonData = state.geojsonCache[config.file];
+    if (!geojsonData) return;
+
+    // Field mappings for each category
+    const fieldMap = {
+        hujan: 'Kelas_FCH',
+        kelerengan: 'Kelas_FKL',
+        bebatuan: 'Kelas_FJB',
+        tanah: 'Kelas_FJT',
+        lahan: 'Kelas_FPL'
+    };
+    const kelasField = fieldMap[category];
+    if (!kelasField) return;
+
+    // Get kecamatan polygon
+    const kecGeoJSON = state.geojsonCache['Batas_Wilayah_Kecamatan_Bappeda.json'];
+    if (!kecGeoJSON || typeof turf === 'undefined') return;
+
+    let kecFeature = null;
+    for (const f of kecGeoJSON.features) {
+        if (f.properties.WADMKC && f.properties.WADMKC.trim().toUpperCase() === kecamatan.trim().toUpperCase()) {
+            kecFeature = f;
+            break;
+        }
+    }
+    if (!kecFeature) return;
+
+    // Check cache first
+    const cacheKey = kecamatan.trim().toUpperCase() + '|' + category;
+    let classAreas = _paramAreaCache[cacheKey];
+
+    if (!classAreas) {
+        try {
+            classAreas = _computeAreasBySampling(kecFeature, geojsonData, kelasField, category);
+        } catch (e) {
+            console.warn('Area sampling failed for', kecamatan, category, e);
+            classAreas = {};
+        }
+        _paramAreaCache[cacheKey] = classAreas;
+    }
+
+    const colors = CONFIG.colors[category] || {};
+    const entries = Object.entries(classAreas).sort((a, b) => b[1] - a[1]);
+
+    if (entries.length === 0) {
+        const tableEl = document.getElementById(tableId);
+        if (tableEl) tableEl.innerHTML = '<div style="text-align:center;padding:10px;color:var(--text-muted);font-size:11px;">Tidak ada data di kecamatan ini</div>';
+        return;
+    }
+
+    const totalArea = entries.reduce((sum, [, area]) => sum + area, 0);
+    const labels = entries.map(([k]) => k);
+    const data = entries.map(([, v]) => v);
+    const bgColors = entries.map(([k]) => colors[k] || '#cccccc');
+
+    // Build table with area in km²
+    let tableHtml = `<table class="statistik-table" style="width:100%; border-collapse:collapse;">
+        <tr style="border-bottom:1px solid var(--glass-border);">
+            <th style="text-align:left; padding:6px 4px; font-size:11px; color:var(--text-secondary);">Kelas</th>
+            <th style="text-align:right; padding:6px 4px; font-size:11px; color:var(--text-secondary);">Luas (km²)</th>
+            <th style="text-align:right; padding:6px 4px; font-size:11px; color:var(--text-secondary);">%</th>
+        </tr>`;
+
+    entries.forEach(([kelas, area]) => {
+        const percent = totalArea > 0 ? ((area / totalArea) * 100).toFixed(1) : '0.0';
+        const color = colors[kelas] || '#cccccc';
+        tableHtml += `<tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+            <td style="padding:6px 4px; font-size:12px; display:flex; align-items:center; gap:6px;">
+                <span style="display:inline-block; width:10px; height:10px; border-radius:2px; background:${color}"></span>
+                <span style="color:var(--text-primary);">${kelas}</span>
+            </td>
+            <td style="text-align:right; padding:6px 4px; font-size:12px; font-weight:600; color:var(--accent-light);">${area.toFixed(2)}</td>
+            <td style="text-align:right; padding:6px 4px; font-size:12px; color:var(--text-muted);">${percent}%</td>
+        </tr>`;
+    });
+    tableHtml += '</table>';
+
+    const tableEl = document.getElementById(tableId);
+    if (tableEl) tableEl.innerHTML = tableHtml;
+
+    // Render doughnut chart with area data
+    Chart.defaults.color = '#a0a0b8';
+    Chart.defaults.font.family = "'Inter', sans-serif";
+
+    state.charts[chartId] = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: labels,
+            datasets: [{
+                data: data,
+                backgroundColor: bgColors,
+                borderWidth: 1,
+                borderColor: 'rgba(15, 15, 26, 0.9)',
+                hoverOffset: 4
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            cutout: '65%',
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    backgroundColor: 'rgba(15, 15, 26, 0.95)',
+                    titleColor: '#f0f0f5',
+                    bodyColor: '#f0f0f5',
+                    padding: 10,
+                    callbacks: {
+                        label: function(context) {
+                            const areaKm2 = context.raw.toFixed(2);
+                            const pct = totalArea > 0 ? ((context.raw / totalArea) * 100).toFixed(1) : '0.0';
+                            return ` ${context.label}: ${areaKm2} km² (${pct}%)`;
+                        }
+                    }
+                }
+            }
+        }
+    });
+}
+
+/**
+ * Compute area per class using point-grid sampling.
+ * Much faster and more robust than polygon intersection for complex geometries.
+ */
+function _computeAreasBySampling(kecFeature, geojsonData, kelasField, category) {
+    // Total kecamatan area in km²
+    const kecAreaKm2 = turf.area(kecFeature) / 1e6;
+
+    // Simplify kecamatan for faster point-in-polygon checks
+    let kecSimple;
+    try {
+        kecSimple = turf.simplify(kecFeature, { tolerance: 0.0005, highQuality: false });
+    } catch (e) {
+        kecSimple = kecFeature;
+    }
+
+    // Generate a sampling grid within kecamatan bbox (~500m spacing)
+    const bbox = turf.bbox(kecFeature);
+    const grid = turf.pointGrid(bbox, 0.5, { units: 'kilometers' });
+
+    // Filter to points actually inside the kecamatan
+    const insidePoints = [];
+    for (const pt of grid.features) {
+        try {
+            if (turf.booleanPointInPolygon(pt, kecSimple)) {
+                insidePoints.push(pt);
+            }
+        } catch (e) { /* skip */ }
+    }
+
+    if (insidePoints.length === 0) return {};
+
+    // Get or create simplified parameter features (cached per category)
+    if (!_simplifiedParamCache[category]) {
+        _simplifiedParamCache[category] = geojsonData.features.map(f => {
+            let simplified;
+            try {
+                simplified = turf.simplify(f, { tolerance: 0.001, highQuality: false });
+            } catch (e) {
+                simplified = f;
+            }
+            return {
+                feature: simplified,
+                kelas: category === 'kelerengan' ? mapKelerenganLabel(f.properties[kelasField] || 'Lainnya') : (f.properties[kelasField] || 'Lainnya'),
+                bbox: turf.bbox(f)
+            };
+        });
+    }
+    const paramFeatures = _simplifiedParamCache[category];
+
+    // For each sample point, determine which parameter class it falls into
+    const classCounts = {};
+    for (const pt of insidePoints) {
+        const coord = pt.geometry.coordinates;
+        for (const { feature, kelas, bbox: fBbox } of paramFeatures) {
+            // Quick bbox check for the point
+            if (coord[0] < fBbox[0] || coord[0] > fBbox[2] ||
+                coord[1] < fBbox[1] || coord[1] > fBbox[3]) {
+                continue;
+            }
+            try {
+                if (turf.booleanPointInPolygon(pt, feature)) {
+                    classCounts[kelas] = (classCounts[kelas] || 0) + 1;
+                    break; // Point classified, move to next
+                }
+            } catch (e) { continue; }
+        }
+    }
+
+    // Convert point counts to area estimates (proportional to kecamatan area)
+    const totalSampled = Object.values(classCounts).reduce((s, v) => s + v, 0);
+    const classAreas = {};
+    if (totalSampled > 0) {
+        for (const k in classCounts) {
+            classAreas[k] = (classCounts[k] / totalSampled) * kecAreaKm2;
+        }
+    }
+
+    return classAreas;
+}
+
+
+// ========================================
 // LEGEND
 // ========================================
 function updateLegend() {
@@ -1258,26 +1674,54 @@ function updateLegend() {
         let colors = null;
         if (layerConf.isDesaKejadian) {
             colors = CONFIG.colors.longsor_desa;
-        } else if (layerKey === 'lahan') {
-            // Tampilan legenda khusus (disederhanakan) untuk Tutupan Lahan
-            colors = {
-                'Pemukiman & Bangunan': '#ffff00',
-                'Hutan Rimba': '#22b14c',
-                'Perkebunan & Pertanian': '#7cfc00', // Sawah, Kebun, Ladang
-                'Badan Air': '#00a2e8', // Sungai, Danau, Kolam
-                'Area Terbuka & Pasir': '#d7c271', // Tanah Kosong, Pasir
-                'Vegetasi Belukar & Rumput': '#6b8e23', // Semak, Padang Rumput
-                'Lainnya': '#d9d9d9'
-            };
         } else {
             colors = CONFIG.colors[layerConf.category];
         }
 
+        // Mapping skor untuk semua layer parameter
+        const skorMapping = {
+            lahan: {
+                'Tambak, waduk, perairan': 1,
+                'Kota, Pemukiman, Bandara': 2,
+                'Hutan dan perkebunan': 3,
+                'Semak Belukar': 4,
+                'Tegalan, sawah': 5
+            },
+            tanah: {
+                'Aluvial, Planosol, Hidromorf': 1,
+                'Latosol': 2,
+                'Brown forest soil, Mediterian': 3,
+                'Andosol, Laterit, Grumusol': 4,
+                'Regosol, Litosol, Organosol': 5
+            },
+            bebatuan: {
+                'Batu Aluvial': 1,
+                'Batu Sedimentasi': 2,
+                'Batu Vulkanik': 3
+            },
+            kelerengan: {
+                'Datar (0 - 8%)': 1,
+                'Landai (8 - 15%)': 2,
+                'Agak Curam (15 - 30%)': 3,
+                'Curam (30 - 45%)': 4,
+                'Sangat Curam (>45%)': 5
+            },
+            hujan: {
+                '2830 - 3000mm': 4,
+                '3000 - 3988mm': 5
+            }
+        };
+
+        const skorMap = skorMapping[layerConf.category] || null;
+
         if (colors) {
             for (const [label, color] of Object.entries(colors)) {
+                const skorText = (skorMap && skorMap[label] !== undefined) 
+                    ? ` <span style="opacity:0.7;">(Skor: ${skorMap[label]})</span>` 
+                    : '';
                 html += `<div class="legend-item">
                     <div class="legend-color" style="background: ${color}"></div>
-                    <span class="legend-label">${label}</span>
+                    <span class="legend-label">${label}${skorText}</span>
                 </div>`;
             }
         }
@@ -1668,6 +2112,7 @@ function init() {
     buildBasemapSwitcher();
     initSwipeTool();
     loadStatistik();
+    preloadKecamatanData();
 
     // Auto-load batas kabupaten + batas kecamatan + longsor_mean on startup
     setTimeout(() => {
