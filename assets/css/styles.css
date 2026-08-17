@@ -1748,3 +1748,65 @@ body.sidebar-open .landslide-year-selector {
         grid-template-columns: 1fr;
     }
 }
+
+/* ==============================
+   COORDINATE TRACKER (Poin 3b)
+   ============================== */
+.coord-tracker {
+    background: rgba(15, 15, 30, 0.75);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 5px 12px;
+    font-size: 11.5px;
+    color: #d0d0e0;
+    font-family: 'Courier New', monospace;
+    letter-spacing: 0.3px;
+    white-space: nowrap;
+    pointer-events: none;
+    user-select: none;
+}
+.coord-tracker strong {
+    color: #ffffff;
+}
+
+/* ==============================
+   KECAMATAN LABELS (Poin 6)
+   ============================== */
+.kecamatan-label {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+.kecamatan-label span {
+    display: block;
+    text-align: center;
+    font-size: 10px;
+    font-weight: 600;
+    color: #ffffff;
+    text-shadow:
+        0 0 4px rgba(0, 0, 0, 0.9),
+        0 0 8px rgba(0, 0, 0, 0.7),
+        1px 1px 2px rgba(0, 0, 0, 0.8),
+        -1px -1px 2px rgba(0, 0, 0, 0.8);
+    white-space: nowrap;
+    pointer-events: none;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+/* ==============================
+   GRID LABELS (Poin 3c)
+   ============================== */
+.grid-label {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    font-size: 9px;
+    color: rgba(255, 255, 255, 0.5);
+    font-family: 'Courier New', monospace;
+    text-shadow: 0 0 3px rgba(0, 0, 0, 0.8);
+    pointer-events: none;
+    white-space: nowrap;
+}

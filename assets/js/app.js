@@ -129,11 +129,11 @@ const CONFIG = {
 
     colors: {
         longsor: {
-            'Sangat Rendah': '#1a9850',
-            'Rendah': '#91cf60',
-            'Sedang': '#fee08b',
-            'Tinggi': '#fc8d59',
-            'Sangat Tinggi': '#d73027',
+            'Sangat Rendah': '#006400',
+            'Rendah': '#90EE90',
+            'Sedang': '#FFFF00',
+            'Tinggi': '#FFA500',
+            'Sangat Tinggi': '#FF0000',
         },
         longsor_desa: {
             '0 Kejadian': '#2dd4a0',
@@ -143,36 +143,37 @@ const CONFIG = {
             '≥ 4 Kejadian': '#880e4f'
         },
         hujan: {
-            '2830 - 3000mm': '#ffff00',
-            '3000 - 3988mm': '#ff0000',
+            '2830 - 3000mm': '#FFFF00',
+            '3000 - 3988mm': '#0000FF',
         },
         kelerengan: {
-            'Datar (0 - 8%)': '#006d2c',
-            'Landai (8 - 15%)': '#74c476',
-            'Agak Curam (15 - 30%)': '#ffff00',
-            'Curam (30 - 45%)': '#fe9929',
-            'Sangat Curam (>45%)': '#e31a1c'
+            'Datar (0 - 8%)': '#228B22',
+            'Landai (8 - 15%)': '#ADFF2F',
+            'Agak Curam (15 - 30%)': '#FFFF00',
+            'Curam (30 - 45%)': '#FFA500',
+            'Sangat Curam (>45%)': '#FF0000'
         },
         bebatuan: {
-            'Batu Aluvial': '#008000',
-            'Batu Sedimentasi': '#ffff00',
-            'Batu Vulkanik': '#ff0000'
+            'Batu Aluvial': '#D3D3D3',
+            'Batu Sedimentasi': '#DAA520',
+            'Batu Vulkanik': '#CD5C5C'
         },
         tanah: {
-            'Aluvial, Planosol, Hidromorf': '#004d1a',
-            'Latosol': '#74c476',
-            'Brown forest soil, Mediterian': '#ffff00',
-            'Andosol, Laterit, Grumusol': '#ff9900',
-            'Regosol, Litosol, Organosol': '#ff0000'
+            'Aluvial, Planosol, Hidromorf': '#D3D3D3',
+            'Latosol': '#DAA520',
+            'Brown forest soil, Mediterian': '#DAA520',
+            'Andosol, Laterit, Grumusol': '#FF8C00',
+            'Regosol, Litosol, Organosol': '#CD853F'
         },
         lahan: {
-            'Tambak, waduk, perairan': '#006400',
-            'Kota, Pemukiman, Bandara': '#a8d600',
-            'Hutan dan perkebunan': '#ffff00',
-            'Semak Belukar': '#ffa500',
-            'Tegalan, sawah': '#ff0000'
+            'Tambak, waduk, perairan': '#1E90FF',
+            'Kota, Pemukiman, Bandara': '#FF4500',
+            'Hutan dan perkebunan': '#006400',
+            'Semak Belukar': '#BDB76B',
+            'Tegalan, sawah': '#F0E68C'
         }
     }
+
 };
 
 // Mapping label lama GeoJSON → label baru config untuk kelerengan
@@ -209,7 +210,10 @@ const state = {
     activeKecamatan: null,  // currently selected kecamatan for stats
     statsMode: 'potensi',   // 'potensi' | 'kejadian' — sidebar stats display mode
     expandedKecamatan: null, // kecamatan currently expanded in accordion
-    charts: {}              // active Chart.js instances
+    charts: {},             // active Chart.js instances
+    gridLayer: null,        // graticule grid layer
+    gridVisible: false,     // grid visibility state
+    kecamatanLabels: null   // label layer group for kecamatan names
 };
 
 // ========================================
@@ -223,6 +227,28 @@ function initMap() {
 
     L.control.zoom({ position: 'bottomright' }).addTo(state.map);
     setBasemap('osm');
+
+    // --- Scale Bar (Poin 3a) ---
+    L.control.scale({ position: 'bottomleft', metric: true, imperial: false, maxWidth: 150 }).addTo(state.map);
+
+    // --- Coordinate Tracker (Poin 3b) ---
+    const coordControl = L.control({ position: 'bottomleft' });
+    coordControl.onAdd = function() {
+        const div = L.DomUtil.create('div', 'coord-tracker');
+        div.innerHTML = 'Lat: - | Lng: -';
+        return div;
+    };
+    coordControl.addTo(state.map);
+    state.map.on('mousemove', function(e) {
+        const coordDiv = document.querySelector('.coord-tracker');
+        if (coordDiv) {
+            coordDiv.innerHTML = `Lat: <strong>${e.latlng.lat.toFixed(5)}</strong> | Lng: <strong>${e.latlng.lng.toFixed(5)}</strong>`;
+        }
+    });
+    state.map.on('mouseout', function() {
+        const coordDiv = document.querySelector('.coord-tracker');
+        if (coordDiv) coordDiv.innerHTML = 'Lat: - | Lng: -';
+    });
 
     // Pastikan popup tertutup jika klik di luar
     state.map.on('click', function() {
@@ -247,6 +273,87 @@ function initMap() {
     };
     homeControl.addTo(state.map);
 }
+
+// ========================================
+// GRID / GRATICULE (Poin 3c)
+// ========================================
+function createGraticule() {
+    if (state.gridLayer) {
+        state.map.removeLayer(state.gridLayer);
+        state.gridLayer = null;
+    }
+
+    const lines = [];
+    const labels = [];
+    const bounds = state.map.getBounds();
+    const zoom = state.map.getZoom();
+
+    // Determine grid interval based on zoom level
+    let interval = 1;
+    if (zoom >= 10) interval = 0.1;
+    if (zoom >= 12) interval = 0.05;
+    if (zoom >= 14) interval = 0.01;
+
+    const startLat = Math.floor(bounds.getSouth() / interval) * interval;
+    const endLat = Math.ceil(bounds.getNorth() / interval) * interval;
+    const startLng = Math.floor(bounds.getWest() / interval) * interval;
+    const endLng = Math.ceil(bounds.getEast() / interval) * interval;
+
+    // Horizontal lines (latitude)
+    for (let lat = startLat; lat <= endLat; lat += interval) {
+        lines.push(L.polyline([[lat, startLng], [lat, endLng]], {
+            color: '#ffffff', weight: 0.5, opacity: 0.35, dashArray: '4,4', interactive: false
+        }));
+        labels.push(L.marker([lat, bounds.getWest() + (bounds.getEast() - bounds.getWest()) * 0.02], {
+            icon: L.divIcon({
+                className: 'grid-label',
+                html: `${lat.toFixed(interval < 0.1 ? 2 : 1)}°`,
+                iconSize: [50, 14],
+                iconAnchor: [0, 7]
+            }),
+            interactive: false
+        }));
+    }
+
+    // Vertical lines (longitude)
+    for (let lng = startLng; lng <= endLng; lng += interval) {
+        lines.push(L.polyline([[startLat, lng], [endLat, lng]], {
+            color: '#ffffff', weight: 0.5, opacity: 0.35, dashArray: '4,4', interactive: false
+        }));
+        labels.push(L.marker([bounds.getNorth() - (bounds.getNorth() - bounds.getSouth()) * 0.02, lng], {
+            icon: L.divIcon({
+                className: 'grid-label',
+                html: `${lng.toFixed(interval < 0.1 ? 2 : 1)}°`,
+                iconSize: [50, 14],
+                iconAnchor: [25, 14]
+            }),
+            interactive: false
+        }));
+    }
+
+    state.gridLayer = L.layerGroup([...lines, ...labels]);
+    if (state.gridVisible) {
+        state.gridLayer.addTo(state.map);
+    }
+}
+
+function toggleGrid() {
+    state.gridVisible = !state.gridVisible;
+    if (state.gridVisible) {
+        createGraticule();
+        state.map.on('moveend zoomend', createGraticule);
+    } else {
+        state.map.off('moveend zoomend', createGraticule);
+        if (state.gridLayer) {
+            state.map.removeLayer(state.gridLayer);
+            state.gridLayer = null;
+        }
+    }
+    // Update toggle UI
+    const gridToggle = document.querySelector('input[data-grid-toggle]');
+    if (gridToggle) gridToggle.checked = state.gridVisible;
+}
+window.toggleGrid = toggleGrid;
 
 function resetMapView() {
     state.map.setView(CONFIG.mapCenter, CONFIG.mapZoom);
@@ -293,6 +400,28 @@ async function loadLayer(key) {
             const response = await fetch(CONFIG.geojsonPath + config.file);
             if (!response.ok) throw new Error(`HTTP ${response.status}`);
             geojsonData = await response.json();
+
+            // Simplify large GeoJSON on-the-fly (Poin 2 — Optimasi Loading)
+            if (typeof turf !== 'undefined' && geojsonData.features) {
+                const rawSize = JSON.stringify(geojsonData).length;
+                if (rawSize > 5 * 1024 * 1024) { // > 5MB
+                    console.log(`🔧 Simplifying ${config.file} (${(rawSize / 1024 / 1024).toFixed(1)}MB)...`);
+                    const tolerance = rawSize > 15 * 1024 * 1024 ? 0.002 : 0.001;
+                    geojsonData = {
+                        ...geojsonData,
+                        features: geojsonData.features.map(f => {
+                            try {
+                                const simplified = turf.simplify(f, { tolerance, highQuality: false });
+                                simplified.properties = f.properties;
+                                return simplified;
+                            } catch(e) { return f; }
+                        })
+                    };
+                    const newSize = JSON.stringify(geojsonData).length;
+                    console.log(`✅ Simplified: ${(rawSize / 1024 / 1024).toFixed(1)}MB → ${(newSize / 1024 / 1024).toFixed(1)}MB (${Math.round((1 - newSize / rawSize) * 100)}% reduction)`);
+                }
+            }
+
             state.geojsonCache[config.file] = geojsonData;
         }
 
@@ -349,6 +478,11 @@ async function loadLayer(key) {
         state.layersInstance[key] = layer;
         state.activeLayers.push(key);
 
+        // --- Kecamatan Labels (Poin 6) ---
+        if (key === 'batas_kecamatan' && config.labelField) {
+            addKecamatanLabels(geojsonData, config.labelField);
+        }
+
         // Batas wilayah always on top visually
         if (config.category === 'batas') {
             layer.bringToFront();
@@ -378,6 +512,13 @@ function removeLayer(key) {
         state.map.removeLayer(state.layersInstance[key]);
         delete state.layersInstance[key];
         state.activeLayers = state.activeLayers.filter(k => k !== key);
+
+        // Remove kecamatan labels when batas_kecamatan is removed
+        if (key === 'batas_kecamatan' && state.kecamatanLabels) {
+            state.map.removeLayer(state.kecamatanLabels);
+            state.kecamatanLabels = null;
+        }
+
         updateBatasInteractivity();
         updateLegend();
         updateInfoPanel();
@@ -386,6 +527,48 @@ function removeLayer(key) {
         updateLandslideYearSelector();
         updateSidebarStats();
     }
+}
+
+// ========================================
+// KECAMATAN LABELS (Poin 6)
+// ========================================
+function addKecamatanLabels(geojsonData, labelField) {
+    // Remove existing labels
+    if (state.kecamatanLabels) {
+        state.map.removeLayer(state.kecamatanLabels);
+    }
+
+    const labelMarkers = [];
+    geojsonData.features.forEach(feature => {
+        const name = feature.properties[labelField];
+        if (!name) return;
+
+        // Get centroid of polygon for label placement
+        let center;
+        try {
+            if (typeof turf !== 'undefined') {
+                const centroid = turf.centroid(feature);
+                center = L.latLng(centroid.geometry.coordinates[1], centroid.geometry.coordinates[0]);
+            }
+        } catch(e) {}
+
+        if (!center) return;
+
+        const marker = L.marker(center, {
+            icon: L.divIcon({
+                className: 'kecamatan-label',
+                html: `<span>${name}</span>`,
+                iconSize: [100, 20],
+                iconAnchor: [50, 10]
+            }),
+            interactive: false,
+            pane: 'tooltipPane'
+        });
+        labelMarkers.push(marker);
+    });
+
+    state.kecamatanLabels = L.layerGroup(labelMarkers);
+    state.kecamatanLabels.addTo(state.map);
 }
 
 // Control batas wilayah interactivity:
@@ -523,8 +706,8 @@ function getLayerStyle(config, feature, key) {
     if (config.isEvakuasiPotensi) {
         const kelas = props['Kelas'] || '';
         let color = '#cccccc';
-        if (kelas === 'Sangat Tinggi') color = '#d73027'; // Merah
-        else if (kelas === 'Rendah') color = '#91cf60'; // Hijau
+        if (kelas === 'Sangat Tinggi') color = '#FF0000'; // Merah
+        else if (kelas === 'Rendah') color = '#90EE90'; // Hijau Muda
         return { fillColor: color, weight: 1, opacity: 0.8, color: 'rgba(255,255,255,0.4)', fillOpacity: 0.6 };
     }
 
@@ -588,6 +771,21 @@ function getLayerStyle(config, feature, key) {
 // ========================================
 // POPUP BINDING
 // ========================================
+// Helper: get centroid of a feature for popup positioning
+function getFeatureCentroid(feature, layer) {
+    try {
+        if (typeof turf !== 'undefined' && feature.geometry) {
+            const centroid = turf.centroid(feature);
+            return L.latLng(centroid.geometry.coordinates[1], centroid.geometry.coordinates[0]);
+        }
+    } catch(e) {}
+    // Fallback to bounds center
+    if (layer.getBounds) {
+        return layer.getBounds().getCenter();
+    }
+    return null;
+}
+
 function bindPopup(config, feature, layer) {
     const props = feature.properties;
     let content = `<strong>${config.label}</strong><br>`;
@@ -650,8 +848,15 @@ function bindPopup(config, feature, layer) {
     }
 
     if (config.category === 'batas' || config.isDesaKejadian) {
-        // Boundaries use click for popup
+        // Boundaries use click for popup — open at centroid (Poin 4)
         layer.bindPopup(content, { className: 'webgis-popup custom-chart-popup', minWidth: 200 });
+        const centroid = getFeatureCentroid(feature, layer);
+        if (centroid) {
+            layer.on('click', function(e) {
+                L.DomEvent.stopPropagation(e);
+                this.openPopup(centroid);
+            });
+        }
         layer.on('mouseover', function() {
             this.setStyle({ weight: 3, color: '#ffeb3b' });
         });
@@ -692,11 +897,18 @@ function bindPopup(config, feature, layer) {
             });
         }
     } else if (layer._paramInfo) {
-        // Parameter layers — click popup with kecamatan stats
+        // Parameter layers — click popup at centroid (Poin 4)
         layer.bindPopup('<div style="text-align:center; padding:10px;">Memuat data...</div>', { 
             className: 'webgis-popup custom-chart-popup', 
             minWidth: 220 
         });
+        const paramCentroid = getFeatureCentroid(feature, layer);
+        if (paramCentroid) {
+            layer.on('click', function(e) {
+                L.DomEvent.stopPropagation(e);
+                this.openPopup(paramCentroid);
+            });
+        }
         
         layer.on('popupopen', function(e) {
             const popup = e.popup;
@@ -734,11 +946,18 @@ function bindPopup(config, feature, layer) {
             this.setStyle(getLayerStyle(config, feature));
         });
     } else if (layer._longsorInfo) {
-        // Longsor layers — click popup with kecamatan stats
+        // Longsor layers — click popup at centroid (Poin 4)
         layer.bindPopup('<div style="text-align:center; padding:10px;">Memuat data...</div>', { 
             className: 'webgis-popup custom-chart-popup', 
             minWidth: 220 
         });
+        const longsorCentroid = getFeatureCentroid(feature, layer);
+        if (longsorCentroid) {
+            layer.on('click', function(e) {
+                L.DomEvent.stopPropagation(e);
+                this.openPopup(longsorCentroid);
+            });
+        }
         
         layer.on('popupopen', function(e) {
             const popup = e.popup;
@@ -1661,11 +1880,11 @@ function updateLegend() {
                 <span class="legend-label">Shelter Area</span>
             </div>
             <div class="legend-item">
-                <div class="legend-color" style="background: #d73027; border: 1px solid rgba(255,255,255,0.4);"></div>
+                <div class="legend-color" style="background: #FF0000; border: 1px solid rgba(255,255,255,0.4);"></div>
                 <span class="legend-label">Potensi Sangat Tinggi</span>
             </div>
             <div class="legend-item">
-                <div class="legend-color" style="background: #91cf60; border: 1px solid rgba(255,255,255,0.4);"></div>
+                <div class="legend-color" style="background: #90EE90; border: 1px solid rgba(255,255,255,0.4);"></div>
                 <span class="legend-label">Potensi Rendah</span>
             </div>`;
             return;
@@ -2083,6 +2302,24 @@ function buildLayerPanel() {
 
         html += `</div></div>`;
     });
+
+    // Grid toggle
+    html += `<div class="layer-category" id="cat-tools">
+        <div class="layer-category-header" onclick="toggleCategory(this)">
+            <span class="layer-category-icon">🔧</span>
+            <span class="layer-category-label">Alat Peta</span>
+            <span class="layer-category-chevron">▼</span>
+        </div>
+        <div class="layer-category-items">
+            <div class="layer-item" onclick="toggleGrid()">
+                <label class="layer-checkbox">
+                    <input type="checkbox" data-grid-toggle>
+                    <span class="checkmark"></span>
+                </label>
+                <span class="layer-item-label">Grid Koordinat</span>
+            </div>
+        </div>
+    </div>`;
 
     body.innerHTML = html;
 }
