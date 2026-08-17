@@ -255,12 +255,31 @@ function initMap() {
         state.map.closePopup();
     });
 
+    // Tombol Grid Toggle
+    const gridControl = L.control({ position: 'bottomright' });
+    gridControl.onAdd = function() {
+        const div = L.DomUtil.create('div', 'leaflet-bar leaflet-control');
+        div.style.border = 'none';
+        div.style.marginTop = '6px';
+        const btn = L.DomUtil.create('a', 'grid-control-btn active', div);
+        btn.innerHTML = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3h18v18H3zM3 9h18M3 15h18M9 3v18M15 3v18"/></svg>';
+        btn.href = '#';
+        btn.title = 'Toggle Grid Koordinat';
+        btn.onclick = function(e) {
+            e.preventDefault();
+            toggleGrid();
+            btn.classList.toggle('active', state.gridVisible);
+        };
+        return div;
+    };
+    gridControl.addTo(state.map);
+
     // Tombol Home (Reset View)
     const homeControl = L.control({ position: 'bottomright' });
     homeControl.onAdd = function() {
         const div = L.DomUtil.create('div', 'leaflet-bar leaflet-control');
         div.style.border = 'none';
-        div.style.marginTop = '10px';
+        div.style.marginTop = '6px';
         const btn = L.DomUtil.create('a', 'home-control-btn', div);
         btn.innerHTML = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>';
         btn.href = '#';
@@ -2340,6 +2359,9 @@ function init() {
         loadLayer('longsor_mean');
         const cbLongsor = document.querySelector('input[data-layer="longsor_mean"]');
         if (cbLongsor) cbLongsor.checked = true;
+
+        // Auto-enable Grid (Poin 3c)
+        toggleGrid();
     }, 500);
 }
 

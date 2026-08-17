@@ -1818,17 +1818,25 @@ body.sidebar-open .landslide-year-selector {
 }
 
 /* ==============================
-   GRID LABELS (Poin 3c)
+   GRID CONTROL BUTTON (Poin 3c)
    ============================== */
-.grid-label {
-    background: transparent !important;
-    border: none !important;
-    box-shadow: none !important;
-    font-size: 9px;
-    color: rgba(255, 255, 255, 0.6);
-    font-family: 'Courier New', monospace;
-    text-shadow: 0 0 3px rgba(0, 0, 0, 0.9);
-    pointer-events: none;
-    white-space: nowrap;
+.grid-control-btn {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    background: rgba(15, 23, 42, 0.8) !important;
+    backdrop-filter: blur(8px) !important;
+    color: #cbd5e1 !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    border-radius: 6px !important;
+    width: 32px !important;
+    height: 32px !important;
+    transition: all 0.2s ease;
 }
+.grid-control-btn.active, .grid-control-btn:hover {
+    background: rgba(30, 41, 59, 0.95) !important;
+    color: var(--accent-light) !important;
+    border-color: var(--accent-light) !important;
+}
+
 
