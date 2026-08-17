@@ -129,11 +129,11 @@ const CONFIG = {
 
     colors: {
         longsor: {
-            'Sangat Rendah': '#006400',
-            'Rendah': '#90EE90',
-            'Sedang': '#FFFF00',
-            'Tinggi': '#FFA500',
-            'Sangat Tinggi': '#FF0000',
+            'Sangat Rendah': '#1a9850',
+            'Rendah': '#91cf60',
+            'Sedang': '#fee08b',
+            'Tinggi': '#fc8d59',
+            'Sangat Tinggi': '#d73027',
         },
         longsor_desa: {
             '0 Kejadian': '#2dd4a0',
@@ -147,11 +147,11 @@ const CONFIG = {
             '3000 - 3988mm': '#0000FF',
         },
         kelerengan: {
-            'Datar (0 - 8%)': '#228B22',
-            'Landai (8 - 15%)': '#ADFF2F',
-            'Agak Curam (15 - 30%)': '#FFFF00',
-            'Curam (30 - 45%)': '#FFA500',
-            'Sangat Curam (>45%)': '#FF0000'
+            'Datar (0 - 8%)': '#006d2c',
+            'Landai (8 - 15%)': '#74c476',
+            'Agak Curam (15 - 30%)': '#ffff00',
+            'Curam (30 - 45%)': '#fe9929',
+            'Sangat Curam (>45%)': '#e31a1c'
         },
         bebatuan: {
             'Batu Aluvial': '#D3D3D3',
@@ -533,17 +533,18 @@ function removeLayer(key) {
 // KECAMATAN LABELS (Poin 6)
 // ========================================
 function addKecamatanLabels(geojsonData, labelField) {
-    // Remove existing labels
     if (state.kecamatanLabels) {
         state.map.removeLayer(state.kecamatanLabels);
     }
 
     const labelMarkers = [];
+    const addedNames = new Set();
+
     geojsonData.features.forEach(feature => {
         const name = feature.properties[labelField];
-        if (!name) return;
+        if (!name || addedNames.has(name)) return;
+        addedNames.add(name);
 
-        // Get centroid of polygon for label placement
         let center;
         try {
             if (typeof turf !== 'undefined') {
@@ -554,17 +555,14 @@ function addKecamatanLabels(geojsonData, labelField) {
 
         if (!center) return;
 
-        const marker = L.marker(center, {
-            icon: L.divIcon({
-                className: 'kecamatan-label',
-                html: `<span>${name}</span>`,
-                iconSize: [100, 20],
-                iconAnchor: [50, 10]
-            }),
-            interactive: false,
-            pane: 'tooltipPane'
-        });
-        labelMarkers.push(marker);
+        const tooltip = L.tooltip({
+            permanent: true,
+            direction: 'center',
+            className: 'kecamatan-label',
+            interactive: false
+        }).setContent(name).setLatLng(center);
+
+        labelMarkers.push(tooltip);
     });
 
     state.kecamatanLabels = L.layerGroup(labelMarkers);
@@ -706,8 +704,8 @@ function getLayerStyle(config, feature, key) {
     if (config.isEvakuasiPotensi) {
         const kelas = props['Kelas'] || '';
         let color = '#cccccc';
-        if (kelas === 'Sangat Tinggi') color = '#FF0000'; // Merah
-        else if (kelas === 'Rendah') color = '#90EE90'; // Hijau Muda
+        if (kelas === 'Sangat Tinggi') color = '#d73027'; // Merah
+        else if (kelas === 'Rendah') color = '#91cf60'; // Hijau
         return { fillColor: color, weight: 1, opacity: 0.8, color: 'rgba(255,255,255,0.4)', fillOpacity: 0.6 };
     }
 
@@ -770,18 +768,22 @@ function getLayerStyle(config, feature, key) {
 
 // ========================================
 // POPUP BINDING
-// ========================================
-// Helper: get centroid of a feature for popup positioning
-function getFeatureCentroid(feature, layer) {
-    try {
-        if (typeof turf !== 'undefined' && feature.geometry) {
-            const centroid = turf.centroid(feature);
+// Helper: get centroid of a kecamatan by name
+function getKecamatanCentroid(kecName) {
+    if (!kecName) return null;
+    const kecGeoJSON = state.geojsonCache['Batas_Wilayah_Kecamatan_Bappeda.json'];
+    if (!kecGeoJSON || typeof turf === 'undefined') return null;
+    const target = kecName.trim().toLowerCase();
+    const feat = kecGeoJSON.features.find(f => {
+        const p = f.properties;
+        const name = (p.WADMKC || p.WADMKK || '').trim().toLowerCase();
+        return name === target;
+    });
+    if (feat) {
+        try {
+            const centroid = turf.centroid(feat);
             return L.latLng(centroid.geometry.coordinates[1], centroid.geometry.coordinates[0]);
-        }
-    } catch(e) {}
-    // Fallback to bounds center
-    if (layer.getBounds) {
-        return layer.getBounds().getCenter();
+        } catch(e) {}
     }
     return null;
 }
@@ -817,7 +819,7 @@ function bindPopup(config, feature, layer) {
                         <div id="table-${safeId}" style="margin-top: 8px;"></div>`;
         }
     } else if (config.category === 'longsor') {
-        const kelas = props[config.field] || props['Kelas'] || '-';
+        const kelas = props[config.field] || props['Kelas'] || props['KelasAkhir'] || '-';
         layer._longsorInfo = { configLabel: config.label, kelas: kelas };
     } else if (['hujan', 'kelerengan', 'bebatuan', 'tanah', 'lahan'].includes(config.category)) {
         // Parameter layers — will be populated dynamically on click with kecamatan info
@@ -850,13 +852,7 @@ function bindPopup(config, feature, layer) {
     if (config.category === 'batas' || config.isDesaKejadian) {
         // Boundaries use click for popup — open at centroid (Poin 4)
         layer.bindPopup(content, { className: 'webgis-popup custom-chart-popup', minWidth: 200 });
-        const centroid = getFeatureCentroid(feature, layer);
-        if (centroid) {
-            layer.on('click', function(e) {
-                L.DomEvent.stopPropagation(e);
-                this.openPopup(centroid);
-            });
-        }
+        
         layer.on('mouseover', function() {
             this.setStyle({ weight: 3, color: '#ffeb3b' });
         });
@@ -885,13 +881,17 @@ function bindPopup(config, feature, layer) {
                 }
             });
         } else {
-            layer.on('popupopen', function() {
-                if (props.WADMKC) {
+            layer.on('popupopen', function(e) {
+                const popup = e.popup;
+                const kecName = props.WADMKC || props.WADMKK;
+                if (kecName) {
+                    const kecCenter = getKecamatanCentroid(kecName);
+                    if (kecCenter) popup.setLatLng(kecCenter);
                     // Show different popup chart based on active layer
                     if (state.activeLayers.includes('longsor_desa')) {
-                        renderPopupKejadianChart(props.WADMKC);
+                        renderPopupKejadianChart(kecName);
                     } else {
-                        renderPopupChart(props.WADMKC);
+                        renderPopupChart(kecName);
                     }
                 }
             });
@@ -902,13 +902,6 @@ function bindPopup(config, feature, layer) {
             className: 'webgis-popup custom-chart-popup', 
             minWidth: 220 
         });
-        const paramCentroid = getFeatureCentroid(feature, layer);
-        if (paramCentroid) {
-            layer.on('click', function(e) {
-                L.DomEvent.stopPropagation(e);
-                this.openPopup(paramCentroid);
-            });
-        }
         
         layer.on('popupopen', function(e) {
             const popup = e.popup;
@@ -917,6 +910,11 @@ function bindPopup(config, feature, layer) {
             const kecamatan = findKecamatan(latlng);
             const kecLabel = kecamatan || 'Tidak diketahui';
             const safeId = (kecLabel + '-' + info.category).replace(/[\s,]+/g, '-');
+
+            if (kecamatan) {
+                const kecCenter = getKecamatanCentroid(kecamatan);
+                if (kecCenter) popup.setLatLng(kecCenter);
+            }
 
             let popupContent = `<strong>${info.configLabel}</strong><br>`;
             popupContent += `Kecamatan: <strong>${kecLabel}</strong>`;
@@ -951,13 +949,6 @@ function bindPopup(config, feature, layer) {
             className: 'webgis-popup custom-chart-popup', 
             minWidth: 220 
         });
-        const longsorCentroid = getFeatureCentroid(feature, layer);
-        if (longsorCentroid) {
-            layer.on('click', function(e) {
-                L.DomEvent.stopPropagation(e);
-                this.openPopup(longsorCentroid);
-            });
-        }
         
         layer.on('popupopen', function(e) {
             const popup = e.popup;
@@ -966,6 +957,11 @@ function bindPopup(config, feature, layer) {
             const kecamatan = findKecamatan(latlng);
             const kecLabel = kecamatan || 'Tidak diketahui';
             const safeId = kecLabel.replace(/\s+/g, '-');
+
+            if (kecamatan) {
+                const kecCenter = getKecamatanCentroid(kecamatan);
+                if (kecCenter) popup.setLatLng(kecCenter);
+            }
 
             let popupContent = `<strong>${info.configLabel}</strong><br>`;
             popupContent += `Kecamatan: <strong>${kecLabel}</strong>`;
@@ -1880,11 +1876,11 @@ function updateLegend() {
                 <span class="legend-label">Shelter Area</span>
             </div>
             <div class="legend-item">
-                <div class="legend-color" style="background: #FF0000; border: 1px solid rgba(255,255,255,0.4);"></div>
+                <div class="legend-color" style="background: #d73027; border: 1px solid rgba(255,255,255,0.4);"></div>
                 <span class="legend-label">Potensi Sangat Tinggi</span>
             </div>
             <div class="legend-item">
-                <div class="legend-color" style="background: #90EE90; border: 1px solid rgba(255,255,255,0.4);"></div>
+                <div class="legend-color" style="background: #91cf60; border: 1px solid rgba(255,255,255,0.4);"></div>
                 <span class="legend-label">Potensi Rendah</span>
             </div>`;
             return;
