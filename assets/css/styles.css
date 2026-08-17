@@ -1752,12 +1752,13 @@ body.sidebar-open .landslide-year-selector {
 /* ==============================
    LEAFLET CONTROLS & SCALE BAR (Poin 3a & 3b)
    ============================== */
-.leaflet-bottom.leaflet-left {
-    margin-bottom: 38px !important;
+.leaflet-bottom.leaflet-right {
+    bottom: 40px !important;
+    right: 16px !important;
     z-index: 1500 !important;
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: flex-end;
     gap: 6px;
 }
 
@@ -1799,14 +1800,14 @@ body.sidebar-open .landslide-year-selector {
    KECAMATAN LABELS (Poin 6)
    ============================== */
 .kecamatan-label {
-    background: rgba(15, 23, 42, 0.75) !important;
-    border: 1px solid rgba(255, 255, 255, 0.25) !important;
+    background: rgba(15, 23, 42, 0.65) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
     border-radius: 4px !important;
     color: #ffffff !important;
     font-size: 10px !important;
     font-weight: 700 !important;
     padding: 2px 6px !important;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.5) !important;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.4) !important;
     white-space: nowrap !important;
     pointer-events: none !important;
     text-transform: uppercase !important;

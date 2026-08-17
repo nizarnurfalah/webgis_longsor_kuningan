@@ -229,10 +229,10 @@ function initMap() {
     setBasemap('osm');
 
     // --- Scale Bar (Poin 3a) ---
-    L.control.scale({ position: 'bottomleft', metric: true, imperial: false, maxWidth: 150 }).addTo(state.map);
+    L.control.scale({ position: 'bottomright', metric: true, imperial: false, maxWidth: 120 }).addTo(state.map);
 
     // --- Coordinate Tracker (Poin 3b) ---
-    const coordControl = L.control({ position: 'bottomleft' });
+    const coordControl = L.control({ position: 'bottomright' });
     coordControl.onAdd = function() {
         const div = L.DomUtil.create('div', 'coord-tracker');
         div.innerHTML = 'Lat: - | Lng: -';
@@ -400,28 +400,6 @@ async function loadLayer(key) {
             const response = await fetch(CONFIG.geojsonPath + config.file);
             if (!response.ok) throw new Error(`HTTP ${response.status}`);
             geojsonData = await response.json();
-
-            // Simplify large GeoJSON on-the-fly (Poin 2 — Optimasi Loading)
-            if (typeof turf !== 'undefined' && geojsonData.features) {
-                const rawSize = JSON.stringify(geojsonData).length;
-                if (rawSize > 5 * 1024 * 1024) { // > 5MB
-                    console.log(`🔧 Simplifying ${config.file} (${(rawSize / 1024 / 1024).toFixed(1)}MB)...`);
-                    const tolerance = rawSize > 15 * 1024 * 1024 ? 0.002 : 0.001;
-                    geojsonData = {
-                        ...geojsonData,
-                        features: geojsonData.features.map(f => {
-                            try {
-                                const simplified = turf.simplify(f, { tolerance, highQuality: false });
-                                simplified.properties = f.properties;
-                                return simplified;
-                            } catch(e) { return f; }
-                        })
-                    };
-                    const newSize = JSON.stringify(geojsonData).length;
-                    console.log(`✅ Simplified: ${(rawSize / 1024 / 1024).toFixed(1)}MB → ${(newSize / 1024 / 1024).toFixed(1)}MB (${Math.round((1 - newSize / rawSize) * 100)}% reduction)`);
-                }
-            }
-
             state.geojsonCache[config.file] = geojsonData;
         }
 
