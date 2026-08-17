@@ -545,8 +545,8 @@ function addKecamatanLabels(geojsonData, labelField) {
         let center;
         try {
             if (typeof turf !== 'undefined') {
-                const centroid = turf.centroid(feature);
-                center = L.latLng(centroid.geometry.coordinates[1], centroid.geometry.coordinates[0]);
+                const pt = turf.centerOfMass ? turf.centerOfMass(feature) : turf.centroid(feature);
+                center = L.latLng(pt.geometry.coordinates[1], pt.geometry.coordinates[0]);
             }
         } catch(e) {}
 
@@ -778,8 +778,8 @@ function getKecamatanCentroid(kecName) {
     });
     if (feat) {
         try {
-            const centroid = turf.centroid(feat);
-            return L.latLng(centroid.geometry.coordinates[1], centroid.geometry.coordinates[0]);
+            const pt = turf.centerOfMass ? turf.centerOfMass(feat) : turf.centroid(feat);
+            return L.latLng(pt.geometry.coordinates[1], pt.geometry.coordinates[0]);
         } catch(e) {}
     }
     return null;
