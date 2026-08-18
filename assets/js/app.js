@@ -228,11 +228,11 @@ function initMap() {
     L.control.zoom({ position: 'bottomright' }).addTo(state.map);
     setBasemap('osm');
 
-    // --- Scale Bar (Poin 3a) ---
-    L.control.scale({ position: 'bottomright', metric: true, imperial: false, maxWidth: 120 }).addTo(state.map);
+    // --- Scale Bar (Poin 3a - bottomleft) ---
+    L.control.scale({ position: 'bottomleft', metric: true, imperial: false, maxWidth: 120 }).addTo(state.map);
 
-    // --- Coordinate Tracker (Poin 3b) ---
-    const coordControl = L.control({ position: 'bottomright' });
+    // --- Coordinate Tracker (Poin 3b - bottomleft) ---
+    const coordControl = L.control({ position: 'bottomleft' });
     coordControl.onAdd = function() {
         const div = L.DomUtil.create('div', 'coord-tracker');
         div.innerHTML = 'Lat: - | Lng: -';
@@ -255,12 +255,28 @@ function initMap() {
         state.map.closePopup();
     });
 
+    // Tombol Ruler (Pengukur Jarak)
+    const rulerControl = L.control({ position: 'bottomright' });
+    rulerControl.onAdd = function() {
+        const div = L.DomUtil.create('div', 'leaflet-bar leaflet-control');
+        div.style.border = 'none';
+        const btn = L.DomUtil.create('a', 'ruler-control-btn', div);
+        btn.innerHTML = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 22L22 2"/><path d="M17 2l3 3"/><path d="M14 5l3 3"/><path d="M11 8l3 3"/><path d="M8 11l3 3"/><path d="M5 14l3 3"/><path d="M2 17l3 3"/></svg>';
+        btn.href = '#';
+        btn.title = 'Pengukur Jarak (Ruler Tool)';
+        btn.onclick = function(e) {
+            e.preventDefault();
+            toggleRuler();
+        };
+        return div;
+    };
+    rulerControl.addTo(state.map);
+
     // Tombol Grid Toggle
     const gridControl = L.control({ position: 'bottomright' });
     gridControl.onAdd = function() {
         const div = L.DomUtil.create('div', 'leaflet-bar leaflet-control');
         div.style.border = 'none';
-        div.style.marginTop = '6px';
         const btn = L.DomUtil.create('a', 'grid-control-btn active', div);
         btn.innerHTML = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3h18v18H3zM3 9h18M3 15h18M9 3v18M15 3v18"/></svg>';
         btn.href = '#';
@@ -279,7 +295,6 @@ function initMap() {
     homeControl.onAdd = function() {
         const div = L.DomUtil.create('div', 'leaflet-bar leaflet-control');
         div.style.border = 'none';
-        div.style.marginTop = '6px';
         const btn = L.DomUtil.create('a', 'home-control-btn', div);
         btn.innerHTML = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>';
         btn.href = '#';
@@ -376,6 +391,135 @@ window.toggleGrid = toggleGrid;
 
 function resetMapView() {
     state.map.setView(CONFIG.mapCenter, CONFIG.mapZoom);
+}
+
+// ========================================
+// RULER / DISTANCE MEASURE TOOL
+// ========================================
+const rulerState = {
+    active: false,
+    points: [],
+    markers: [],
+    line: null,
+    tempLine: null
+};
+
+function toggleRuler() {
+    rulerState.active = !rulerState.active;
+    const btns = document.querySelectorAll('.ruler-control-btn');
+    btns.forEach(b => b.classList.toggle('active', rulerState.active));
+
+    if (rulerState.active) {
+        state.map.getContainer().style.cursor = 'crosshair';
+        rulerState.points = [];
+        rulerState.markers = [];
+        showToast('Mode Pengukur Jarak: Klik peta untuk membuat titik. Klik ganda untuk selesai.', 'info');
+        state.map.on('click', handleRulerClick);
+        state.map.on('mousemove', handleRulerMouseMove);
+        state.map.on('dblclick', finishRuler);
+    } else {
+        clearRuler();
+    }
+}
+window.toggleRuler = toggleRuler;
+
+function clearRuler() {
+    rulerState.active = false;
+    state.map.getContainer().style.cursor = '';
+    const btns = document.querySelectorAll('.ruler-control-btn');
+    btns.forEach(b => b.classList.remove('active'));
+
+    state.map.off('click', handleRulerClick);
+    state.map.off('mousemove', handleRulerMouseMove);
+    state.map.off('dblclick', finishRuler);
+
+    if (rulerState.line) { state.map.removeLayer(rulerState.line); rulerState.line = null; }
+    if (rulerState.tempLine) { state.map.removeLayer(rulerState.tempLine); rulerState.tempLine = null; }
+    rulerState.markers.forEach(m => state.map.removeLayer(m));
+    rulerState.markers = [];
+    rulerState.points = [];
+}
+
+function handleRulerClick(e) {
+    if (!rulerState.active) return;
+    const latlng = e.latlng;
+    rulerState.points.push(latlng);
+
+    // Marker at vertex
+    const circle = L.circleMarker(latlng, {
+        radius: 5,
+        color: '#38bdf8',
+        fillColor: '#ffffff',
+        fillOpacity: 1,
+        weight: 2,
+        interactive: false
+    }).addTo(state.map);
+    rulerState.markers.push(circle);
+
+    // Polyline connecting vertices
+    if (!rulerState.line) {
+        rulerState.line = L.polyline(rulerState.points, {
+            color: '#38bdf8',
+            weight: 3,
+            dashArray: '6, 6',
+            interactive: false
+        }).addTo(state.map);
+    } else {
+        rulerState.line.setLatLngs(rulerState.points);
+    }
+
+    // Total distance calculation
+    let distMeters = 0;
+    for (let i = 1; i < rulerState.points.length; i++) {
+        distMeters += rulerState.points[i-1].distanceTo(rulerState.points[i]);
+    }
+
+    const distText = distMeters >= 1000 ? (distMeters / 1000).toFixed(2) + ' km' : Math.round(distMeters) + ' m';
+
+    // Tooltip marker for total distance
+    if (rulerState.points.length > 1) {
+        const labelMarker = L.marker(latlng, {
+            icon: L.divIcon({
+                className: 'ruler-label-badge',
+                html: `<span>Jarak: <strong>${distText}</strong></span>`,
+                iconSize: [120, 24],
+                iconAnchor: [60, 32]
+            }),
+            interactive: false
+        }).addTo(state.map);
+        rulerState.markers.push(labelMarker);
+    }
+}
+
+function handleRulerMouseMove(e) {
+    if (!rulerState.active || rulerState.points.length === 0) return;
+    const lastPoint = rulerState.points[rulerState.points.length - 1];
+    const tempCoords = [lastPoint, e.latlng];
+
+    if (!rulerState.tempLine) {
+        rulerState.tempLine = L.polyline(tempCoords, {
+            color: '#38bdf8',
+            weight: 2,
+            dashArray: '3, 6',
+            opacity: 0.7,
+            interactive: false
+        }).addTo(state.map);
+    } else {
+        rulerState.tempLine.setLatLngs(tempCoords);
+    }
+}
+
+function finishRuler(e) {
+    if (e) L.DomEvent.stopPropagation(e);
+    rulerState.active = false;
+    state.map.getContainer().style.cursor = '';
+    state.map.off('click', handleRulerClick);
+    state.map.off('mousemove', handleRulerMouseMove);
+    state.map.off('dblclick', finishRuler);
+    if (rulerState.tempLine) { state.map.removeLayer(rulerState.tempLine); rulerState.tempLine = null; }
+    const btns = document.querySelectorAll('.ruler-control-btn');
+    btns.forEach(b => b.classList.remove('active'));
+    showToast('Pengukuran selesai. Klik ikon penggaris untuk hapus/reset.', 'success');
 }
 
 // ========================================

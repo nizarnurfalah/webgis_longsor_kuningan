@@ -835,8 +835,9 @@ body.sidebar-open .legend-panel.visible {
    ======================================== */
 .info-panel {
     position: absolute;
-    bottom: 50px;
-    right: 75px;
+    top: 75px;
+    right: 16px;
+    bottom: auto;
     left: auto;
     z-index: 1001; /* Above Leaflet controls */
     min-width: 150px;
@@ -848,7 +849,7 @@ body.sidebar-open .legend-panel.visible {
     border-radius: var(--radius-md);
     box-shadow: var(--shadow-md);
     padding: 10px 14px;
-    transform: translateY(20px);
+    transform: translateY(-10px);
     opacity: 0;
     visibility: hidden;
     transition: all var(--transition-smooth);
@@ -1750,34 +1751,93 @@ body.sidebar-open .landslide-year-selector {
 }
 
 /* ==============================
-   LEAFLET CONTROLS & SCALE BAR (Poin 3a & 3b)
+   MAP CONTROLS DOCK (Bottom-Right)
    ============================== */
 .leaflet-bottom.leaflet-right {
-    bottom: 40px !important;
+    bottom: 50px !important;
     right: 16px !important;
     z-index: 1500 !important;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 6px;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-end !important;
+    gap: 8px !important;
+}
+
+.leaflet-bottom.leaflet-right .leaflet-control {
+    margin: 0 !important;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45) !important;
+    border: none !important;
+}
+
+.leaflet-control-zoom,
+.home-control-btn,
+.grid-control-btn,
+.ruler-control-btn {
+    background: rgba(15, 23, 42, 0.88) !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.18) !important;
+    border-radius: 8px !important;
+    color: #cbd5e1 !important;
+    transition: all 0.2s ease !important;
+}
+
+.leaflet-control-zoom a,
+.home-control-btn,
+.grid-control-btn,
+.ruler-control-btn {
+    width: 36px !important;
+    height: 36px !important;
+    line-height: 36px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    color: #f1f5f9 !important;
+    text-decoration: none !important;
+    font-size: 15px !important;
+}
+
+.leaflet-control-zoom a:hover,
+.home-control-btn:hover,
+.grid-control-btn:hover,
+.ruler-control-btn:hover,
+.grid-control-btn.active,
+.ruler-control-btn.active {
+    background: rgba(30, 41, 59, 0.95) !important;
+    color: #38bdf8 !important;
+    border-color: rgba(56, 189, 248, 0.5) !important;
+}
+
+/* ==============================
+   STATUS BAR: SCALE & COORD (Bottom-Left)
+   ============================== */
+.leaflet-bottom.leaflet-left {
+    bottom: 50px !important;
+    left: 16px !important;
+    z-index: 1500 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 6px !important;
+    pointer-events: none !important;
 }
 
 .leaflet-control-scale-line {
-    background: rgba(15, 23, 42, 0.8) !important;
+    background: rgba(15, 23, 42, 0.85) !important;
     backdrop-filter: blur(8px) !important;
     -webkit-backdrop-filter: blur(8px) !important;
-    border: 1px solid rgba(255, 255, 255, 0.25) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
     border-top: none !important;
     color: #ffffff !important;
     font-size: 10px !important;
     font-weight: 600 !important;
-    padding: 2px 6px !important;
+    padding: 3px 8px !important;
     border-radius: 0 0 4px 4px !important;
     text-shadow: 0 1px 2px rgba(0,0,0,0.8) !important;
 }
 
 .coord-tracker {
-    background: rgba(15, 23, 42, 0.8);
+    background: rgba(15, 23, 42, 0.85);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
     border: 1px solid rgba(255, 255, 255, 0.2);
@@ -1788,9 +1848,8 @@ body.sidebar-open .landslide-year-selector {
     font-family: 'Courier New', monospace;
     letter-spacing: 0.3px;
     white-space: nowrap;
-    pointer-events: none;
     user-select: none;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.4);
 }
 .coord-tracker strong {
     color: #ffffff;
@@ -1818,25 +1877,41 @@ body.sidebar-open .landslide-year-selector {
 }
 
 /* ==============================
-   GRID CONTROL BUTTON (Poin 3c)
+   RULER TOOLTIP BADGE
    ============================== */
-.grid-control-btn {
-    display: flex !important;
-    align-items: center;
-    justify-content: center;
-    background: rgba(15, 23, 42, 0.8) !important;
-    backdrop-filter: blur(8px) !important;
-    color: #cbd5e1 !important;
-    border: 1px solid rgba(255, 255, 255, 0.2) !important;
-    border-radius: 6px !important;
-    width: 32px !important;
-    height: 32px !important;
-    transition: all 0.2s ease;
+.ruler-label-badge {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
 }
-.grid-control-btn.active, .grid-control-btn:hover {
-    background: rgba(30, 41, 59, 0.95) !important;
-    color: var(--accent-light) !important;
-    border-color: var(--accent-light) !important;
+.ruler-label-badge span {
+    background: rgba(15, 23, 42, 0.9);
+    border: 1px solid #38bdf8;
+    border-radius: 6px;
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    white-space: nowrap;
+}
+.ruler-label-badge strong {
+    color: #38bdf8;
+}
+
+/* ==============================
+   GRID LABELS (Poin 3c)
+   ============================== */
+.grid-label {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    font-size: 9px;
+    color: rgba(255, 255, 255, 0.6);
+    font-family: 'Courier New', monospace;
+    text-shadow: 0 0 3px rgba(0, 0, 0, 0.9);
+    pointer-events: none;
+    white-space: nowrap;
 }
 
 
