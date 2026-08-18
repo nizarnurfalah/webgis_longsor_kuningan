@@ -231,11 +231,12 @@ function initMap() {
     // --- Scale Bar (Poin 3a - bottomleft) ---
     L.control.scale({ position: 'bottomleft', metric: true, imperial: false, maxWidth: 120 }).addTo(state.map);
 
-    // --- Coordinate Tracker (Poin 3b - bottomleft) ---
-    const coordControl = L.control({ position: 'bottomleft' });
+    // --- Coordinate Tracker (Poin 3b - topleft) ---
+    const coordControl = L.control({ position: 'topleft' });
     coordControl.onAdd = function() {
         const div = L.DomUtil.create('div', 'coord-tracker');
         div.innerHTML = 'Lat: - | Lng: -';
+        L.DomEvent.disableClickPropagation(div);
         return div;
     };
     coordControl.addTo(state.map);
@@ -260,12 +261,15 @@ function initMap() {
     rulerControl.onAdd = function() {
         const div = L.DomUtil.create('div', 'leaflet-bar leaflet-control');
         div.style.border = 'none';
+        L.DomEvent.disableClickPropagation(div);
+        L.DomEvent.disableScrollPropagation(div);
         const btn = L.DomUtil.create('a', 'ruler-control-btn', div);
         btn.innerHTML = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 22L22 2"/><path d="M17 2l3 3"/><path d="M14 5l3 3"/><path d="M11 8l3 3"/><path d="M8 11l3 3"/><path d="M5 14l3 3"/><path d="M2 17l3 3"/></svg>';
         btn.href = '#';
         btn.title = 'Pengukur Jarak (Ruler Tool)';
         btn.onclick = function(e) {
             e.preventDefault();
+            e.stopPropagation();
             toggleRuler();
         };
         return div;
@@ -277,12 +281,15 @@ function initMap() {
     gridControl.onAdd = function() {
         const div = L.DomUtil.create('div', 'leaflet-bar leaflet-control');
         div.style.border = 'none';
+        L.DomEvent.disableClickPropagation(div);
+        L.DomEvent.disableScrollPropagation(div);
         const btn = L.DomUtil.create('a', 'grid-control-btn active', div);
         btn.innerHTML = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3h18v18H3zM3 9h18M3 15h18M9 3v18M15 3v18"/></svg>';
         btn.href = '#';
         btn.title = 'Toggle Grid Koordinat';
         btn.onclick = function(e) {
             e.preventDefault();
+            e.stopPropagation();
             toggleGrid();
             btn.classList.toggle('active', state.gridVisible);
         };
@@ -295,12 +302,15 @@ function initMap() {
     homeControl.onAdd = function() {
         const div = L.DomUtil.create('div', 'leaflet-bar leaflet-control');
         div.style.border = 'none';
+        L.DomEvent.disableClickPropagation(div);
+        L.DomEvent.disableScrollPropagation(div);
         const btn = L.DomUtil.create('a', 'home-control-btn', div);
         btn.innerHTML = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>';
         btn.href = '#';
         btn.title = 'Tampilan Awal';
         btn.onclick = function(e) {
             e.preventDefault();
+            e.stopPropagation();
             resetMapView();
         };
         return div;
