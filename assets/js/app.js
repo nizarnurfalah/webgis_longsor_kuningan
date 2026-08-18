@@ -401,7 +401,8 @@ const rulerState = {
     points: [],
     markers: [],
     line: null,
-    tempLine: null
+    tempLine: null,
+    cursorTooltip: null
 };
 
 function toggleRuler() {
@@ -410,34 +411,78 @@ function toggleRuler() {
     btns.forEach(b => b.classList.toggle('active', rulerState.active));
 
     if (rulerState.active) {
-        state.map.getContainer().style.cursor = 'crosshair';
+        document.body.classList.add('ruler-active');
         rulerState.points = [];
         rulerState.markers = [];
-        showToast('Mode Pengukur Jarak: Klik peta untuk membuat titik. Klik ganda untuk selesai.', 'info');
+        
+        createCursorTooltip();
+        
+        showToast('Mode Pengukur Jarak aktif! Klik peta untuk mulai mengukur.', 'info');
         state.map.on('click', handleRulerClick);
         state.map.on('mousemove', handleRulerMouseMove);
         state.map.on('dblclick', finishRuler);
+        document.addEventListener('keydown', handleRulerKeyDown);
     } else {
         clearRuler();
     }
 }
 window.toggleRuler = toggleRuler;
 
+function createCursorTooltip() {
+    removeCursorTooltip();
+    const tooltip = document.createElement('div');
+    tooltip.id = 'rulerCursorTooltip';
+    tooltip.className = 'ruler-cursor-tooltip';
+    tooltip.innerHTML = '📐 Klik peta untuk mulai mengukur';
+    document.body.appendChild(tooltip);
+    rulerState.cursorTooltip = tooltip;
+}
+
+function removeCursorTooltip() {
+    if (rulerState.cursorTooltip) {
+        rulerState.cursorTooltip.remove();
+        rulerState.cursorTooltip = null;
+    }
+    const el = document.getElementById('rulerCursorTooltip');
+    if (el) el.remove();
+}
+
 function clearRuler() {
     rulerState.active = false;
-    state.map.getContainer().style.cursor = '';
+    document.body.classList.remove('ruler-active');
     const btns = document.querySelectorAll('.ruler-control-btn');
     btns.forEach(b => b.classList.remove('active'));
+
+    removeCursorTooltip();
 
     state.map.off('click', handleRulerClick);
     state.map.off('mousemove', handleRulerMouseMove);
     state.map.off('dblclick', finishRuler);
+    document.removeEventListener('keydown', handleRulerKeyDown);
 
     if (rulerState.line) { state.map.removeLayer(rulerState.line); rulerState.line = null; }
     if (rulerState.tempLine) { state.map.removeLayer(rulerState.tempLine); rulerState.tempLine = null; }
     rulerState.markers.forEach(m => state.map.removeLayer(m));
     rulerState.markers = [];
     rulerState.points = [];
+}
+
+function handleRulerKeyDown(e) {
+    if (e.key === 'Escape' && rulerState.active) {
+        finishRuler();
+    }
+}
+
+function getRulerTotalDistance() {
+    let distMeters = 0;
+    for (let i = 1; i < rulerState.points.length; i++) {
+        distMeters += rulerState.points[i-1].distanceTo(rulerState.points[i]);
+    }
+    return distMeters;
+}
+
+function formatDistance(meters) {
+    return meters >= 1000 ? (meters / 1000).toFixed(2) + ' km' : Math.round(meters) + ' m';
 }
 
 function handleRulerClick(e) {
@@ -456,7 +501,7 @@ function handleRulerClick(e) {
     }).addTo(state.map);
     rulerState.markers.push(circle);
 
-    // Polyline connecting vertices
+    // Main line
     if (!rulerState.line) {
         rulerState.line = L.polyline(rulerState.points, {
             color: '#38bdf8',
@@ -468,15 +513,10 @@ function handleRulerClick(e) {
         rulerState.line.setLatLngs(rulerState.points);
     }
 
-    // Total distance calculation
-    let distMeters = 0;
-    for (let i = 1; i < rulerState.points.length; i++) {
-        distMeters += rulerState.points[i-1].distanceTo(rulerState.points[i]);
-    }
+    const currentTotal = getRulerTotalDistance();
+    const distText = formatDistance(currentTotal);
 
-    const distText = distMeters >= 1000 ? (distMeters / 1000).toFixed(2) + ' km' : Math.round(distMeters) + ' m';
-
-    // Tooltip marker for total distance
+    // Permanent label badge at vertex if points > 1
     if (rulerState.points.length > 1) {
         const labelMarker = L.marker(latlng, {
             icon: L.divIcon({
@@ -492,34 +532,71 @@ function handleRulerClick(e) {
 }
 
 function handleRulerMouseMove(e) {
-    if (!rulerState.active || rulerState.points.length === 0) return;
+    if (!rulerState.active) return;
+
+    // Update floating cursor tooltip position
+    if (rulerState.cursorTooltip && e.originalEvent) {
+        const x = e.originalEvent.clientX + 16;
+        const y = e.originalEvent.clientY + 16;
+        rulerState.cursorTooltip.style.left = x + 'px';
+        rulerState.cursorTooltip.style.top = y + 'px';
+    }
+
+    if (rulerState.points.length === 0) {
+        if (rulerState.cursorTooltip) {
+            rulerState.cursorTooltip.innerHTML = '📐 Klik peta untuk mulai mengukur';
+        }
+        return;
+    }
+
     const lastPoint = rulerState.points[rulerState.points.length - 1];
     const tempCoords = [lastPoint, e.latlng];
 
+    // Rubber-band line stretching to current mouse position
     if (!rulerState.tempLine) {
         rulerState.tempLine = L.polyline(tempCoords, {
             color: '#38bdf8',
             weight: 2,
             dashArray: '3, 6',
-            opacity: 0.7,
+            opacity: 0.8,
             interactive: false
         }).addTo(state.map);
     } else {
         rulerState.tempLine.setLatLngs(tempCoords);
     }
+
+    // Dynamic distance calculation including current mouse cursor
+    const segmentDist = lastPoint.distanceTo(e.latlng);
+    const cumulativeDist = getRulerTotalDistance() + segmentDist;
+    const distText = formatDistance(cumulativeDist);
+
+    if (rulerState.cursorTooltip) {
+        rulerState.cursorTooltip.innerHTML = `📐 Jarak: <strong>${distText}</strong><br><span style="font-size:10px; opacity:0.85;">Klik ganda untuk selesai</span>`;
+    }
 }
 
 function finishRuler(e) {
     if (e) L.DomEvent.stopPropagation(e);
+    if (!rulerState.active) return;
+
     rulerState.active = false;
-    state.map.getContainer().style.cursor = '';
+    document.body.classList.remove('ruler-active');
+    removeCursorTooltip();
+
     state.map.off('click', handleRulerClick);
     state.map.off('mousemove', handleRulerMouseMove);
     state.map.off('dblclick', finishRuler);
+    document.removeEventListener('keydown', handleRulerKeyDown);
+
     if (rulerState.tempLine) { state.map.removeLayer(rulerState.tempLine); rulerState.tempLine = null; }
-    const btns = document.querySelectorAll('.ruler-control-btn');
-    btns.forEach(b => b.classList.remove('active'));
-    showToast('Pengukuran selesai. Klik ikon penggaris untuk hapus/reset.', 'success');
+
+    const btns = document.querySelector('.ruler-control-btn');
+    if (btns) btns.classList.remove('active');
+
+    const totalDist = getRulerTotalDistance();
+    if (totalDist > 0) {
+        showToast(`Pengukuran selesai! Total jarak: ${formatDistance(totalDist)}. Klik penggaris untuk reset.`, 'success');
+    }
 }
 
 // ========================================
