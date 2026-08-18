@@ -231,24 +231,15 @@ function initMap() {
     // --- Scale Bar (Poin 3a - bottomleft) ---
     L.control.scale({ position: 'bottomleft', metric: true, imperial: false, maxWidth: 120 }).addTo(state.map);
 
-    // --- Coordinate Tracker (Poin 3b - topleft) ---
-    const coordControl = L.control({ position: 'topleft' });
-    coordControl.onAdd = function() {
-        const div = L.DomUtil.create('div', 'coord-tracker');
-        div.innerHTML = 'Lat: - | Lng: -';
-        L.DomEvent.disableClickPropagation(div);
-        return div;
-    };
-    coordControl.addTo(state.map);
+    // --- Coordinate Tracker (Integrated in Topbar & Map) ---
     state.map.on('mousemove', function(e) {
-        const coordDiv = document.querySelector('.coord-tracker');
-        if (coordDiv) {
-            coordDiv.innerHTML = `Lat: <strong>${e.latlng.lat.toFixed(5)}</strong> | Lng: <strong>${e.latlng.lng.toFixed(5)}</strong>`;
-        }
+        const coordDivs = document.querySelectorAll('#topbarCoordTracker, .topbar-coord-tracker, .coord-tracker');
+        const html = `Lat: <strong>${e.latlng.lat.toFixed(5)}</strong> | Lng: <strong>${e.latlng.lng.toFixed(5)}</strong>`;
+        coordDivs.forEach(div => div.innerHTML = html);
     });
     state.map.on('mouseout', function() {
-        const coordDiv = document.querySelector('.coord-tracker');
-        if (coordDiv) coordDiv.innerHTML = 'Lat: - | Lng: -';
+        const coordDivs = document.querySelectorAll('#topbarCoordTracker, .topbar-coord-tracker, .coord-tracker');
+        coordDivs.forEach(div => div.innerHTML = 'Lat: - | Lng: -');
     });
 
     // Pastikan popup tertutup jika klik di luar
