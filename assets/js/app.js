@@ -154,9 +154,9 @@ const CONFIG = {
             'Sangat Curam (>45%)': '#e31a1c'
         },
         bebatuan: {
-            'Batu Aluvial': '#D3D3D3',
-            'Batu Sedimentasi': '#DAA520',
-            'Batu Vulkanik': '#CD5C5C'
+            'Batu Aluvial': '#C8C8AA',
+            'Batuan Sedimentasi': '#DAA520',
+            'Batuan Vulkanik': '#CD5C5C'
         },
         tanah: {
             'Aluvial, Planosol, Hidromorf': '#D3D3D3',
@@ -239,20 +239,31 @@ function initMap() {
     const coordControl = L.control({ position: 'bottomright' });
     coordControl.onAdd = function() {
         const div = L.DomUtil.create('div', 'coord-tracker');
-        div.innerHTML = 'Lat: - | Lng: -';
+        div.innerHTML = '<span class="coord-text">Lat: - | Lng: -</span> <button class="coord-copy-btn" title="Salin Koordinat">📋</button>';
         L.DomEvent.disableClickPropagation(div);
+        L.DomEvent.disableScrollPropagation(div);
+        div.querySelector('.coord-copy-btn').addEventListener('click', function(e) {
+            e.stopPropagation();
+            const textEl = div.querySelector('.coord-text');
+            const raw = textEl.textContent.trim();
+            navigator.clipboard.writeText(raw).then(function() {
+                showToast('Koordinat disalin: ' + raw, 'success');
+            }).catch(function() {
+                showToast('Gagal menyalin koordinat', 'error');
+            });
+        });
         return div;
     };
     coordControl.addTo(state.map);
 
     state.map.on('mousemove', function(e) {
-        const coordDivs = document.querySelectorAll('.coord-tracker');
+        const coordTexts = document.querySelectorAll('.coord-tracker .coord-text');
         const html = `Lat: <strong>${e.latlng.lat.toFixed(5)}</strong> | Lng: <strong>${e.latlng.lng.toFixed(5)}</strong>`;
-        coordDivs.forEach(div => div.innerHTML = html);
+        coordTexts.forEach(el => el.innerHTML = html);
     });
     state.map.on('mouseout', function() {
-        const coordDivs = document.querySelectorAll('.coord-tracker');
-        coordDivs.forEach(div => div.innerHTML = 'Lat: - | Lng: -');
+        const coordTexts = document.querySelectorAll('.coord-tracker .coord-text');
+        coordTexts.forEach(el => el.innerHTML = 'Lat: - | Lng: -');
     });
 
     // Pastikan popup tertutup jika klik di luar
@@ -350,7 +361,7 @@ function createGraticule() {
     // Horizontal lines (latitude)
     for (let lat = startLat; lat <= endLat; lat += interval) {
         lines.push(L.polyline([[lat, startLng], [lat, endLng]], {
-            color: '#ffffff', weight: 0.5, opacity: 0.35, dashArray: '4,4', interactive: false
+            color: '#555555', weight: 0.6, opacity: 0.5, dashArray: '5,5', interactive: false
         }));
         labels.push(L.marker([lat, bounds.getWest() + (bounds.getEast() - bounds.getWest()) * 0.02], {
             icon: L.divIcon({
@@ -366,7 +377,7 @@ function createGraticule() {
     // Vertical lines (longitude)
     for (let lng = startLng; lng <= endLng; lng += interval) {
         lines.push(L.polyline([[startLat, lng], [endLat, lng]], {
-            color: '#ffffff', weight: 0.5, opacity: 0.35, dashArray: '4,4', interactive: false
+            color: '#555555', weight: 0.6, opacity: 0.5, dashArray: '5,5', interactive: false
         }));
         labels.push(L.marker([bounds.getNorth() - (bounds.getNorth() - bounds.getSouth()) * 0.02, lng], {
             icon: L.divIcon({
@@ -805,14 +816,18 @@ function addKecamatanLabels(geojsonData, labelField) {
 
         if (!center) return;
 
-        const tooltip = L.tooltip({
-            permanent: true,
-            direction: 'center',
-            className: 'kecamatan-label',
-            interactive: false
-        }).setContent(name).setLatLng(center);
+        // Use L.marker with divIcon instead of L.tooltip (tooltips can't be added to layerGroup)
+        const marker = L.marker(center, {
+            interactive: false,
+            icon: L.divIcon({
+                className: 'kecamatan-label',
+                html: `<span>${name}</span>`,
+                iconSize: null,
+                iconAnchor: [0, 0]
+            })
+        });
 
-        labelMarkers.push(tooltip);
+        labelMarkers.push(marker);
     });
 
     state.kecamatanLabels = L.layerGroup(labelMarkers);
@@ -997,7 +1012,7 @@ function getLayerStyle(config, feature, key) {
     }
 
     if (config.category === 'bebatuan') {
-        const kelas = props['Kelas_FJB'] || '';
+        const kelas = props['Klasifikas'] || props['Kelas_FJB'] || '';
         const color = CONFIG.colors.bebatuan[kelas] || '#cccccc';
         return { fillColor: color, weight: 0.8, opacity: 0.8, color: 'rgba(255,255,255,0.3)', fillOpacity: 0.75 };
     }
@@ -1084,7 +1099,7 @@ function bindPopup(config, feature, layer) {
         const paramFields = {
             hujan: { kelas: 'Kelas_FCH', skor: 'Skor_FCH' },
             kelerengan: { kelas: 'Kelas_FKL', skor: 'Skor_FKL' },
-            bebatuan: { kelas: 'Kelas_FJB', skor: 'Skor_FJB' },
+            bebatuan: { kelas: 'Klasifikas', skor: 'Skor_FJB' },
             tanah: { kelas: 'Kelas_FJT', skor: 'Skor_FJT' },
             lahan: { kelas: 'Kelas_FPL', skor: 'Skor_FPL' }
         };
@@ -1893,7 +1908,7 @@ function renderPopupParameterChart(kecamatan, category, safeId) {
     const fieldMap = {
         hujan: 'Kelas_FCH',
         kelerengan: 'Kelas_FKL',
-        bebatuan: 'Kelas_FJB',
+        bebatuan: 'Klasifikas',
         tanah: 'Kelas_FJT',
         lahan: 'Kelas_FPL'
     };
@@ -2162,8 +2177,8 @@ function updateLegend() {
             },
             bebatuan: {
                 'Batu Aluvial': 1,
-                'Batu Sedimentasi': 2,
-                'Batu Vulkanik': 3
+                'Batuan Sedimentasi': 2,
+                'Batuan Vulkanik': 3
             },
             kelerengan: {
                 'Datar (0 - 8%)': 1,
