@@ -859,8 +859,8 @@ body.sidebar-open .legend-panel.visible {
    ======================================== */
 .info-panel {
     position: absolute;
-    bottom: 10px;
-    right: 50px;
+    bottom: 60px;
+    right: 64px;
     top: auto;
     left: auto;
     z-index: 1400;
@@ -2126,37 +2126,37 @@ body.sidebar-open .landslide-year-selector {
 }
 .kecamatan-label span {
     display: inline-block;
-    background: rgba(15, 23, 42, 0.75);
+    background: rgba(15, 23, 42, 0.82);
     backdrop-filter: blur(6px);
     -webkit-backdrop-filter: blur(6px);
-    border: 1px solid rgba(255, 255, 255, 0.22);
+    border: 1px solid rgba(255, 255, 255, 0.25);
     border-radius: 5px;
     color: #ffffff;
     font-weight: 700;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.5);
     white-space: nowrap;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    font-size: 10px;
+    font-size: 9.5px;
     padding: 2px 6px;
-    transition: all 0.2s ease;
-    transform-origin: center center;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+    transform: translate(-50%, -50%);
 }
 
 /* Zoom <= 11 (Zoom Out): Label ringkas/kecil */
 #map.zoom-far .kecamatan-label span {
-    font-size: 7px;
-    padding: 1px 3px;
-    opacity: 0.8;
-    transform: scale(0.8);
+    font-size: 7.5px;
+    padding: 1px 4px;
+    opacity: 0.85;
+    transform: translate(-50%, -50%) scale(0.85);
 }
 
 /* Zoom 12-13 (Zoom Sedang): Ukuran standar */
 #map.zoom-mid .kecamatan-label span {
-    font-size: 9px;
-    padding: 2px 5px;
+    font-size: 9.5px;
+    padding: 2px 6px;
     opacity: 0.95;
-    transform: scale(1);
+    transform: translate(-50%, -50%) scale(1);
 }
 
 /* Zoom >= 14 (Zoom Dekat): Ukuran besar & jelas */
@@ -2164,7 +2164,7 @@ body.sidebar-open .landslide-year-selector {
     font-size: 12px;
     padding: 3px 8px;
     opacity: 1;
-    transform: scale(1.1);
+    transform: translate(-50%, -50%) scale(1.15);
 }
 
 /* ==============================
