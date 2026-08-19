@@ -231,14 +231,27 @@ function initMap() {
     // --- Scale Bar (Poin 3a - bottomleft) ---
     L.control.scale({ position: 'bottomleft', metric: true, imperial: false, maxWidth: 120 }).addTo(state.map);
 
-    // --- Coordinate Tracker (Integrated in Topbar & Map) ---
+    // --- Dynamic Zoom Label Scaling ---
+    updateLabelZoomClass();
+    state.map.on('zoomend zoom', updateLabelZoomClass);
+
+    // --- Coordinate Tracker (Bottom-Right beside Zoom Controls) ---
+    const coordControl = L.control({ position: 'bottomright' });
+    coordControl.onAdd = function() {
+        const div = L.DomUtil.create('div', 'coord-tracker');
+        div.innerHTML = 'Lat: - | Lng: -';
+        L.DomEvent.disableClickPropagation(div);
+        return div;
+    };
+    coordControl.addTo(state.map);
+
     state.map.on('mousemove', function(e) {
-        const coordDivs = document.querySelectorAll('#topbarCoordTracker, .topbar-coord-tracker, .coord-tracker');
+        const coordDivs = document.querySelectorAll('.coord-tracker');
         const html = `Lat: <strong>${e.latlng.lat.toFixed(5)}</strong> | Lng: <strong>${e.latlng.lng.toFixed(5)}</strong>`;
         coordDivs.forEach(div => div.innerHTML = html);
     });
     state.map.on('mouseout', function() {
-        const coordDivs = document.querySelectorAll('#topbarCoordTracker, .topbar-coord-tracker, .coord-tracker');
+        const coordDivs = document.querySelectorAll('.coord-tracker');
         coordDivs.forEach(div => div.innerHTML = 'Lat: - | Lng: -');
     });
 
@@ -749,6 +762,24 @@ function removeLayer(key) {
 }
 
 // ========================================
+// DYNAMIC ZOOM KECAMATAN LABEL SCALING
+// ========================================
+function updateLabelZoomClass() {
+    if (!state.map) return;
+    const zoom = state.map.getZoom();
+    const mapContainer = state.map.getContainer();
+    mapContainer.classList.remove('zoom-far', 'zoom-mid', 'zoom-close');
+
+    if (zoom <= 10) {
+        mapContainer.classList.add('zoom-far');
+    } else if (zoom <= 12) {
+        mapContainer.classList.add('zoom-mid');
+    } else {
+        mapContainer.classList.add('zoom-close');
+    }
+}
+
+// ========================================
 // KECAMATAN LABELS (Poin 6)
 // ========================================
 function addKecamatanLabels(geojsonData, labelField) {
@@ -786,6 +817,7 @@ function addKecamatanLabels(geojsonData, labelField) {
 
     state.kecamatanLabels = L.layerGroup(labelMarkers);
     state.kecamatanLabels.addTo(state.map);
+    updateLabelZoomClass();
 }
 
 // Control batas wilayah interactivity:

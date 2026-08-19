@@ -855,15 +855,15 @@ body.sidebar-open .legend-panel.visible {
 }
 
 /* ========================================
-   INFO PANEL (Layer Aktif)
+   INFO PANEL (Layer Aktif) - Bottom-Right next to Zoom Buttons
    ======================================== */
 .info-panel {
     position: absolute;
-    top: 115px;
-    right: 16px;
-    bottom: auto;
+    bottom: 88px;
+    right: 64px;
+    top: auto;
     left: auto;
-    z-index: 1001; /* Above Leaflet controls */
+    z-index: 1500;
     min-width: 150px;
     max-width: 250px;
     background: var(--glass-bg);
@@ -873,7 +873,7 @@ body.sidebar-open .legend-panel.visible {
     border-radius: var(--radius-md);
     box-shadow: var(--shadow-md);
     padding: 10px 14px;
-    transform: translateY(-10px);
+    transform: translateY(10px);
     opacity: 0;
     visibility: hidden;
     transition: all var(--transition-smooth);
@@ -2062,6 +2062,10 @@ body.sidebar-open .landslide-year-selector {
 }
 
 .coord-tracker {
+    position: absolute;
+    bottom: 50px;
+    right: 64px;
+    z-index: 1500;
     background: rgba(15, 23, 42, 0.88);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
@@ -2074,7 +2078,7 @@ body.sidebar-open .landslide-year-selector {
     letter-spacing: 0.3px;
     white-space: nowrap;
     user-select: none;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45);
 }
 .coord-tracker strong {
     color: #38bdf8;
@@ -2086,24 +2090,48 @@ body.sidebar-open .landslide-year-selector {
 }
 
 /* ==============================
-   KECAMATAN LABELS (Poin 6)
+   DYNAMIC ZOOM KECAMATAN LABELS
    ============================== */
 .kecamatan-label {
-    background: rgba(15, 23, 42, 0.65) !important;
-    border: 1px solid rgba(255, 255, 255, 0.2) !important;
-    border-radius: 4px !important;
+    background: rgba(15, 23, 42, 0.75) !important;
+    backdrop-filter: blur(6px) !important;
+    -webkit-backdrop-filter: blur(6px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.22) !important;
+    border-radius: 5px !important;
     color: #ffffff !important;
-    font-size: 10px !important;
     font-weight: 700 !important;
-    padding: 2px 6px !important;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.4) !important;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.4) !important;
     white-space: nowrap !important;
     pointer-events: none !important;
     text-transform: uppercase !important;
     letter-spacing: 0.5px !important;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 .kecamatan-label::before {
     display: none !important;
+}
+
+/* Zoom <= 10 (Sangat Jauh / Zoom Out): Sembunyikan label agar peta tidak tertutup 32 badge! */
+#map.zoom-far .kecamatan-label {
+    opacity: 0 !important;
+    visibility: hidden !important;
+    transform: scale(0.5) !important;
+}
+
+/* Zoom 11-12 (Tampilan Normal / Sedang): Label ukuran mini yang pas & kompak */
+#map.zoom-mid .kecamatan-label {
+    font-size: 8.5px !important;
+    padding: 1px 4px !important;
+    opacity: 0.85 !important;
+    transform: scale(0.9) !important;
+}
+
+/* Zoom >= 13 (Zoom In / Dekat): Label membesar & jelas */
+#map.zoom-close .kecamatan-label {
+    font-size: 11px !important;
+    padding: 3px 8px !important;
+    opacity: 1 !important;
+    transform: scale(1.1) !important;
 }
 
 /* ==============================
