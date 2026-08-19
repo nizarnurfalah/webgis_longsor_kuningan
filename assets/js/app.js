@@ -154,16 +154,16 @@ const CONFIG = {
             'Sangat Curam (>45%)': '#e31a1c'
         },
         bebatuan: {
-            'Batu Aluvial': '#C8C8AA',
-            'Batuan Sedimentasi': '#DAA520',
-            'Batuan Vulkanik': '#CD5C5C'
+            'Batu Aluvial': '#FFF2B2',
+            'Batu Sedimentasi': '#DAA520',
+            'Batu Vulkanik': '#CD5C5C'
         },
         tanah: {
-            'Aluvial, Planosol, Hidromorf': '#D3D3D3',
-            'Latosol': '#DAA520',
-            'Brown forest soil, Mediterian': '#DAA520',
-            'Andosol, Laterit, Grumusol': '#FF8C00',
-            'Regosol, Litosol, Organosol': '#CD853F'
+            'Aluvial, Planosol, Hidromorf': '#E6E6C8',
+            'Latosol': '#D2691E',
+            'Brown forest soil, Mediterian': '#8B4513',
+            'Andosol, Laterit, Grumusol': '#CD853F',
+            'Regosol, Litosol, Organosol': '#C0392B'
         },
         lahan: {
             'Tambak, waduk, perairan': '#1E90FF',
@@ -1012,13 +1012,13 @@ function getLayerStyle(config, feature, key) {
     }
 
     if (config.category === 'bebatuan') {
-        const kelas = props['Klasifikas'] || props['Kelas_FJB'] || '';
+        const kelas = props['Kelas_FJB'] || props['Klasifikas'] || props['Kelas'] || '';
         const color = CONFIG.colors.bebatuan[kelas] || '#cccccc';
         return { fillColor: color, weight: 0.8, opacity: 0.8, color: 'rgba(255,255,255,0.3)', fillOpacity: 0.75 };
     }
 
     if (config.category === 'tanah') {
-        const kelas = props['Kelas_FJT'] || '';
+        const kelas = props['Kelas_FJT'] || props['Klasifikas'] || props['Kelas'] || '';
         const color = CONFIG.colors.tanah[kelas] || '#cccccc';
         return { fillColor: color, weight: 0.8, opacity: 0.8, color: 'rgba(255,255,255,0.3)', fillOpacity: 0.75 };
     }
@@ -1099,13 +1099,13 @@ function bindPopup(config, feature, layer) {
         const paramFields = {
             hujan: { kelas: 'Kelas_FCH', skor: 'Skor_FCH' },
             kelerengan: { kelas: 'Kelas_FKL', skor: 'Skor_FKL' },
-            bebatuan: { kelas: 'Klasifikas', skor: 'Skor_FJB' },
+            bebatuan: { kelas: 'Kelas_FJB', skor: 'Skor_FJB' },
             tanah: { kelas: 'Kelas_FJT', skor: 'Skor_FJT' },
             lahan: { kelas: 'Kelas_FPL', skor: 'Skor_FPL' }
         };
         const fields = paramFields[config.category];
         const paramLabel = paramLabels[config.category];
-        let kelasVal = props[fields.kelas] || 'N/A';
+        let kelasVal = props[fields.kelas] || props['Kelas_FJB'] || props['Kelas_FJT'] || props['Klasifikas'] || 'N/A';
         const skorVal = props[fields.skor] || 'N/A';
         // Map old GeoJSON kelerengan labels to new labels
         if (config.category === 'kelerengan') {
@@ -1908,7 +1908,7 @@ function renderPopupParameterChart(kecamatan, category, safeId) {
     const fieldMap = {
         hujan: 'Kelas_FCH',
         kelerengan: 'Kelas_FKL',
-        bebatuan: 'Klasifikas',
+        bebatuan: 'Kelas_FJB',
         tanah: 'Kelas_FJT',
         lahan: 'Kelas_FPL'
     };
@@ -2177,8 +2177,8 @@ function updateLegend() {
             },
             bebatuan: {
                 'Batu Aluvial': 1,
-                'Batuan Sedimentasi': 2,
-                'Batuan Vulkanik': 3
+                'Batu Sedimentasi': 2,
+                'Batu Vulkanik': 3
             },
             kelerengan: {
                 'Datar (0 - 8%)': 1,
