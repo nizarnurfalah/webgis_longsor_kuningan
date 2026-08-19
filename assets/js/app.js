@@ -770,9 +770,9 @@ function updateLabelZoomClass() {
     const mapContainer = state.map.getContainer();
     mapContainer.classList.remove('zoom-far', 'zoom-mid', 'zoom-close');
 
-    if (zoom <= 10) {
+    if (zoom <= 11) {
         mapContainer.classList.add('zoom-far');
-    } else if (zoom <= 12) {
+    } else if (zoom <= 13) {
         mapContainer.classList.add('zoom-mid');
     } else {
         mapContainer.classList.add('zoom-close');
